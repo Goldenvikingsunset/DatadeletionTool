@@ -1,49 +1,49 @@
 table 50501 "Record Deletion Rel. Error"
 {
-    DataClassification = ToBeClassified;
-    LookupPageId = "Record Deletion Rel. Error";
-    DrillDownPageId = "Record Deletion Rel. Error";
+    Caption = 'Record Deletion Relation Error';
+    DataClassification = CustomerContent;
+
     fields
     {
         field(1; "Table ID"; Integer)
         {
             Caption = 'Table ID';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(2; "Entry No."; Integer)
         {
             Caption = 'Entry No.';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(10; "Field No."; Integer)
         {
             Caption = 'Field No.';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(11; "Field Name"; Text[30])
         {
             Caption = 'Field Name';
             FieldClass = FlowField;
-            CalcFormula = Lookup (Field.FieldName where(TableNo = field("Table ID"), "No." = field("Field No.")));
+            CalcFormula = lookup(Field.FieldName where(TableNo = field("Table ID"),
+                                                      "No." = field("Field No.")));
             Editable = false;
         }
         field(20; "Error"; Text[250])
         {
             Caption = 'Error';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
     }
 
     keys
     {
-        key(PK; "Table ID", "Entry No.")
+        key(Key1; "Table ID", "Entry No.")
         {
             Clustered = true;
         }
     }
-
 }

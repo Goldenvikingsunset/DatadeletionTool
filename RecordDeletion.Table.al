@@ -1,62 +1,70 @@
 table 50500 "Record Deletion"
 {
-    DataClassification = ToBeClassified;
+    Caption = 'Record Deletion';
+    DataClassification = CustomerContent;
 
     fields
     {
         field(1; "Table ID"; Integer)
         {
             Caption = 'Table ID';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
-        field(10; "Table Name"; Text[250])
+        field(2; "Module"; Enum "Record Deletion Module")
+        {
+            Caption = 'Module';
+            DataClassification = CustomerContent;
+        }
+        field(3; "Table Name"; Text[250])
         {
             Caption = 'Table Name';
-            Editable = false;
             FieldClass = FlowField;
-            CalcFormula = Lookup(AllObjWithCaption."Object Name" where("Object Type" = const(Table), "Object ID" = field("Table ID")));
+            CalcFormula = lookup(AllObjWithCaption."Object Name" where("Object Type" = const(Table),
+                                                                       "Object ID" = field("Table ID")));
+            Editable = false;
         }
-        // field(20; "No. of Records"; Integer)
-        // {
-        //     Caption = 'No. of Records';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        //     // CalcFormula = lookup ("Table Information"."No. of Records" where("Company Name" = field(Company), "Table No." = field("Table ID")));
-        //     //CalcFormula = lookup ("Table Information"."No. of Records" where("Company Name" = field(Company), "Table No." = field("Table ID")));
-        // }
-        field(21; "No. of Table Relation Errors"; Integer)
+        field(4; "No. of Records"; Integer)
         {
-            Caption = 'No. of Table Relation Errors';
+            Caption = 'No. of Records';
+            FieldClass = Normal;
             Editable = false;
-            FieldClass = FlowField;
-            CalcFormula = Count("Record Deletion Rel. Error" where("Table ID" = field("Table ID")));
         }
-        field(30; "Delete Records"; Boolean)
+        field(5; "Delete Records"; Boolean)
         {
             Caption = 'Delete Records';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
-        field(40; Company; Text[30])
+        field(6; Company; Text[30])
         {
             Caption = 'Company';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
-
-
+        field(7; "Table Type"; Enum "Record Deletion Table Type")
+        {
+            Caption = 'Table Type';
+            DataClassification = CustomerContent;
+        }
+        field(8; "Deletion Priority"; Integer)
+        {
+            Caption = 'Deletion Priority';
+            DataClassification = CustomerContent;
+            MinValue = 0;
+            MaxValue = 999;
+        }
     }
 
     keys
     {
-        key(PK; "Table ID")
+        key(Key1; "Table ID")
         {
             Clustered = true;
         }
+        key(Key2; "Module", "Table Type", "Deletion Priority") { }
     }
 
     trigger OnInsert()
     begin
         Company := CopyStr(CompanyName, 1, MaxStrLen(Company));
     end;
-
 }

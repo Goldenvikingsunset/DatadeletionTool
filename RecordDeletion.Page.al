@@ -1,131 +1,124 @@
 page 50500 "Record Deletion"
 {
-
     PageType = List;
-    SourceTable = "Record Deletion";
-    Caption = 'Record Deletion';
     ApplicationArea = All;
     UsageCategory = Lists;
+    SourceTable = "Record Deletion";
+    Caption = 'Record Deletion';
 
     layout
     {
-        area(content)
+        area(Content)
         {
-            repeater(General)
+            repeater(Records)
             {
                 field("Table ID"; Rec."Table ID")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Table ID field.';
+                    ToolTip = 'Specifies the ID of the table';
                 }
                 field("Table Name"; Rec."Table Name")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Table Name field.';
+                    ToolTip = 'Specifies the name of the table';
                 }
-                field(NoOfRecords; RecordDeletionMgt.CalcRecordsInTable(Rec."Table ID"))
-                {
-                    CaptionML = ENU = 'No. of Records';
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the CalcRecordsInTable(Rec.Table ID) field.';
-
-                }
-                field("No. of Table Relation Errors"; Rec."No. of Table Relation Errors")
+                field(Module; Rec.Module)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the No. of Table Relation Errors field.';
+                    ToolTip = 'Specifies the module this table belongs to';
+                }
+                field("Table Type"; Rec."Table Type")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the type of table (Master, Setup, etc)';
+                }
+                field("No. of Records"; Rec."No. of Records")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the number of records in the table';
                 }
                 field("Delete Records"; Rec."Delete Records")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Delete Records field.';
+                    ToolTip = 'Specifies if records should be deleted from this table';
                 }
-                // field(Company; Company)
-                // {
-                //     ApplicationArea = All;
-                // }
+                field("Deletion Priority"; Rec."Deletion Priority")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the deletion order priority';
+                }
             }
         }
     }
+
     actions
     {
-        area(Navigation)
-        {
-
-        }
         area(Processing)
         {
             action(InsertUpdateTables)
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'Insert/Update Tables';
-                Promoted = true;
-                PromotedIsBig = true;
+                Caption = 'Insert/Update Tables';
                 Image = Refresh;
+                Promoted = true;
                 PromotedCategory = Process;
-                PromotedOnly = true;
-                ToolTip = 'Executes the InsertUpdateTables action.';
+                PromotedIsBig = true;
+                ToolTip = 'Initialize or update the list of tables';
+
                 trigger OnAction()
+                var
+                    RecordDeletionMgt: Codeunit "Record Deletion Mgt.";
                 begin
                     RecordDeletionMgt.InsertUpdateTables();
                 end;
             }
-            action(SuggestsRecords)
+            action(SuggestRecords)
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'Suggest Records to Delete';
-                Promoted = true;
-                PromotedIsBig = true;
+                Caption = 'Suggest Records to Delete';
                 Image = Suggest;
-                PromotedCategory = Process;
-                PromotedOnly = true;
-                ToolTip = 'Executes the SuggestsRecords action.';
-                trigger OnAction()
-                begin
-                    RecordDeletionMgt.SuggestRecordsToDelete();
-                end;
-            }
-            action(SuggestsUnlicensedPartnerOrCustomRecords)
-            {
-                ApplicationArea = All;
-                CaptionML = ENU = 'Suggest Unlicensed Partner or Custom Records to Delete';
                 Promoted = true;
-                PromotedIsBig = true;
-                Image = Suggest;
                 PromotedCategory = Process;
-                PromotedOnly = true;
-                ToolTip = 'Executes the SuggestsUnlicensedPartnerOrCustomRecords action.';
+                PromotedIsBig = true;
+                ToolTip = 'Get suggestions for tables to delete from';
+
                 trigger OnAction()
+                var
+                    TableClassificationMgt: Codeunit "Table Classification Core Mgt.";
                 begin
-                    RecordDeletionMgt.SuggestUnlicensedPartnerOrCustomRecordsToDelete();
+                    TableClassificationMgt.SuggestRecordsToDelete();
                 end;
             }
             action(ClearRecords)
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'Clear Records to Delete';
-                Promoted = true;
-                PromotedIsBig = true;
+                Caption = 'Clear Records to Delete';
                 Image = Delete;
+                Promoted = true;
                 PromotedCategory = Process;
-                PromotedOnly = true;
-                ToolTip = 'Executes the ClearRecords action.';
+                PromotedIsBig = true;
+                ToolTip = 'Clear all delete selections';
+
                 trigger OnAction()
+                var
+                    RecordDeletionMgt: Codeunit "Record Deletion Mgt.";
                 begin
                     RecordDeletionMgt.ClearRecordsToDelete();
                 end;
             }
-            action(DeleteRecords)
+            action(DeleteRecordsNoTrigger)
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'Delete Records (no trigger!)';
-                Promoted = true;
-                PromotedIsBig = true;
+                Caption = 'Delete Records (no trigger!)';
                 Image = Delete;
+                Promoted = true;
                 PromotedCategory = Process;
-                PromotedOnly = true;
-                ToolTip = 'Executes the DeleteRecords action.';
+                PromotedIsBig = true;
+                ToolTip = 'Delete records without running triggers';
+
                 trigger OnAction()
+                var
+                    RecordDeletionMgt: Codeunit "Record Deletion Mgt.";
                 begin
                     RecordDeletionMgt.DeleteRecords(false);
                 end;
@@ -133,14 +126,16 @@ page 50500 "Record Deletion"
             action(DeleteRecordsWithTrigger)
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'Delete Records (with trigger!)';
-                Promoted = true;
-                PromotedIsBig = true;
+                Caption = 'Delete Records (with trigger!)';
                 Image = Delete;
+                Promoted = true;
                 PromotedCategory = Process;
-                PromotedOnly = true;
-                ToolTip = 'Executes the DeleteRecordsWithTrigger action.';
+                PromotedIsBig = true;
+                ToolTip = 'Delete records and run triggers';
+
                 trigger OnAction()
+                var
+                    RecordDeletionMgt: Codeunit "Record Deletion Mgt.";
                 begin
                     RecordDeletionMgt.DeleteRecords(true);
                 end;
@@ -148,14 +143,16 @@ page 50500 "Record Deletion"
             action(CheckTableRelations)
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'Check Table Relations';
-                Promoted = true;
-                PromotedIsBig = true;
+                Caption = 'Check Table Relations';
                 Image = Relationship;
+                Promoted = true;
                 PromotedCategory = Process;
-                PromotedOnly = true;
-                ToolTip = 'Executes the CheckTableRelations action.';
+                PromotedIsBig = true;
+                ToolTip = 'Check relationships between tables';
+
                 trigger OnAction()
+                var
+                    RecordDeletionMgt: Codeunit "Record Deletion Mgt.";
                 begin
                     RecordDeletionMgt.CheckTableRelations();
                 end;
@@ -163,22 +160,20 @@ page 50500 "Record Deletion"
             action(ViewRecords)
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'View Records';
-                Promoted = true;
-                PromotedIsBig = true;
+                Caption = 'View Records';
                 Image = Table;
+                Promoted = true;
                 PromotedCategory = Process;
-                PromotedOnly = true;
-                ToolTip = 'Executes the ViewRecords action.';
+                PromotedIsBig = true;
+                ToolTip = 'View the records in the selected table';
+
                 trigger OnAction()
+                var
+                    RecordDeletionMgt: Codeunit "Record Deletion Mgt.";
                 begin
                     RecordDeletionMgt.ViewRecords(Rec);
                 end;
             }
         }
-
     }
-    var
-        RecordDeletionMgt: Codeunit "Record Deletion Mgt.";
-
 }

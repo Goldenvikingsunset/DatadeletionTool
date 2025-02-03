@@ -1,46 +1,44 @@
 page 50501 "Record Deletion Rel. Error"
 {
-
     PageType = List;
-    SourceTable = "Record Deletion Rel. Error";
-    Caption = 'Record Deletion Rel. Error';
     ApplicationArea = All;
     UsageCategory = Lists;
+    SourceTable = "Record Deletion Rel. Error";
+    Caption = 'Record Deletion Relation Error';
+    Editable = false;
 
     layout
     {
-        area(content)
+        area(Content)
         {
-            repeater(General)
+            repeater(Errors)
             {
-
+                field("Table ID"; Rec."Table ID")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the ID of the table with the error';
+                }
                 field("Entry No."; Rec."Entry No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the Entry No.';
-                }
-                field("Error"; Rec.Error)
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the error text if an error occured';
-                }
-                field("Field Name"; Rec."Field Name")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the Field Name';
+                    ToolTip = 'Specifies the entry number of the error';
                 }
                 field("Field No."; Rec."Field No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the Field No.';
+                    ToolTip = 'Specifies the field number with the error';
                 }
-                field("Table ID"; Rec."Table ID")
+                field("Field Name"; Rec."Field Name")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the Table ID';
+                    ToolTip = 'Specifies the name of the field with the error';
+                }
+                field(Error; Rec.Error)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the error details';
                 }
             }
         }
     }
-
 }
