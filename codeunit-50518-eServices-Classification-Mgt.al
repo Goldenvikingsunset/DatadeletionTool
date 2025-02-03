@@ -23,13 +23,6 @@ codeunit 50518 "eServices Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Online Map Parameter Setup", 'eServices', 'OnlineMap', 'Setup', 999);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Document Service Scenario");
-        SetSuggestedTable(Database::"Incoming Document");
-        SetSuggestedTable(Database::"Incoming Document Attachment");
-        SetSuggestedTable(Database::Geolocation);
-    end;
 
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin

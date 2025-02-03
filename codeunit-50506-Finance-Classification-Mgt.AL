@@ -351,29 +351,6 @@ codeunit 50506 "Finance Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Line Fee Note on Report Hist.", 'Finance', 'Reminder', 'History', 200);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        // Ledger Entries
-        SetSuggestedTable(Database::"G/L Entry");
-        SetSuggestedTable(Database::"VAT Entry");
-        SetSuggestedTable(Database::"Detailed Cust. Ledg. Entry");
-        SetSuggestedTable(Database::"Detailed Vendor Ledg. Entry");
-        SetSuggestedTable(Database::"Dimension Set Entry");
-        SetSuggestedTable(Database::"G/L Register");
-
-
-        // Journals
-        SetSuggestedTable(Database::"Gen. Journal Line");
-
-        // Documents
-        SetSuggestedTable(Database::"Deferral Header");
-        SetSuggestedTable(Database::"Deferral Line");
-
-        // Analysis
-        SetSuggestedTable(Database::"Analysis View Entry");
-        SetSuggestedTable(Database::"Analysis View Budget Entry");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";

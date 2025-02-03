@@ -84,17 +84,6 @@ codeunit 50516 "Fixed Assets Class. Mgt."
         ClassifyTable(RecordDeletion, Database::"FA Register", 'FixedAssets', 'Ledger', 'Register', 150);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"FA Ledger Entry");
-        SetSuggestedTable(Database::"FA Journal Line");
-        SetSuggestedTable(Database::"FA Reclass. Journal Line");
-        SetSuggestedTable(Database::"Maintenance Ledger Entry");
-        SetSuggestedTable(Database::"Ins. Coverage Ledger Entry");
-        SetSuggestedTable(Database::"FA Register");
-        SetSuggestedTable(Database::"Insurance Register");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionTableType: Enum "Record Deletion Table Type";

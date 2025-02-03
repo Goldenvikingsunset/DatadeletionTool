@@ -66,15 +66,6 @@ codeunit 50523 "HR Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Misc. Article", 'HumanResource', 'Qualification', 'Setup', 999);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Employee Absence");
-        SetSuggestedTable(Database::"Confidential Information");
-        SetSuggestedTable(Database::"Employee Ledger Entry");
-        SetSuggestedTable(Database::"Detailed Employee Ledger Entry");
-        SetSuggestedTable(Database::"Employee Qualification");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin

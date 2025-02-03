@@ -104,19 +104,6 @@ codeunit 50507 "Bank Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Positive Pay Entry Detail", 'Bank', 'PositivePay', 'Document', 300);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Bank Account Ledger Entry");
-        SetSuggestedTable(Database::"Check Ledger Entry");
-        SetSuggestedTable(Database::"Bank Acc. Reconciliation");
-        SetSuggestedTable(Database::"Bank Acc. Reconciliation Line");
-        SetSuggestedTable(Database::"Bank Statement Matching Buffer");
-        SetSuggestedTable(Database::"Direct Debit Collection");
-        SetSuggestedTable(Database::"Direct Debit Collection Entry");
-        SetSuggestedTable(Database::"Payment Export Data");
-        SetSuggestedTable(Database::"Positive Pay Entry");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";

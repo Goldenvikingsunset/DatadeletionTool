@@ -39,14 +39,6 @@ codeunit 50524 "Pricing Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Price Worksheet Line", 'Pricing', 'Worksheet', 'Document', 300);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Price List Line");
-        SetSuggestedTable(Database::"Price Calculation Buffer");
-        SetSuggestedTable(Database::"Price Worksheet Line");
-        SetSuggestedTable(Database::"Duplicate Price Line");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin

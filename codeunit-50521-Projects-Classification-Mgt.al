@@ -41,8 +41,8 @@ codeunit 50521 "Projects Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Job WIP Buffer", 'Project', 'WIP', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Job Difference Buffer", 'Project', 'Job', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Job Entry No.", 'Project', 'Job', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Job Task Archive", 'Jobs', 'Archive', 'History', 200);
-        ClassifyTable(RecordDeletion, Database::"Job Planning Line Archive", 'Jobs', 'Archive', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Job Task Archive", 'Project', 'Archive', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Job Planning Line Archive", 'Project', 'Archive', 'History', 200);
     end;
 
     local procedure ClassifyResourceTables(var RecordDeletion: Record "Record Deletion")
@@ -115,18 +115,6 @@ codeunit 50521 "Projects Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Time Sheet Chart Setup", 'Project', 'Timesheet', 'Setup', 999);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Job Ledger Entry");
-        SetSuggestedTable(Database::"Job Register");
-        SetSuggestedTable(Database::"Job Journal Line");
-        SetSuggestedTable(Database::"Job Planning Line");
-        SetSuggestedTable(Database::"Job WIP Entry");
-        SetSuggestedTable(Database::"Job WIP G/L Entry");
-        SetSuggestedTable(Database::"Time Sheet Header");
-        SetSuggestedTable(Database::"Time Sheet Line");
-        SetSuggestedTable(Database::"Time Sheet Posting Entry");
-    end;
 
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin

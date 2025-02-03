@@ -103,30 +103,6 @@ codeunit 50526 "IC Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Intercompany Setup Diagnostic", 'Intercompany', 'Setup', 'Setup', 999);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        // Inbox/Outbox
-        SetSuggestedTable(Database::"IC Inbox Transaction");
-        SetSuggestedTable(Database::"IC Inbox Purchase Line");
-        SetSuggestedTable(Database::"IC Inbox Sales Line");
-        SetSuggestedTable(Database::"IC Outbox Transaction");
-        SetSuggestedTable(Database::"IC Outbox Purchase Line");
-        SetSuggestedTable(Database::"IC Outbox Sales Line");
-
-        // History
-        SetSuggestedTable(Database::"Handled IC Inbox Trans.");
-        SetSuggestedTable(Database::"Handled IC Inbox Purch. Line");
-        SetSuggestedTable(Database::"Handled IC Inbox Sales Line");
-        SetSuggestedTable(Database::"Handled IC Outbox Trans.");
-        SetSuggestedTable(Database::"Handled IC Outbox Purch. Line");
-        SetSuggestedTable(Database::"Handled IC Outbox Sales Line");
-
-        // Documents
-        SetSuggestedTable(Database::"IC Comment Line");
-        SetSuggestedTable(Database::"IC Document Dimension");
-        SetSuggestedTable(Database::"Buffer IC Inbox Jnl. Line");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin

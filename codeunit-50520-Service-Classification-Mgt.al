@@ -193,18 +193,6 @@ codeunit 50520 "Service Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Service Line Price Adjmt.", 'Service', 'Pricing', 'Document', 300);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Service Header");
-        SetSuggestedTable(Database::"Service Line");
-        SetSuggestedTable(Database::"Service Ledger Entry");
-        SetSuggestedTable(Database::"Service Register");
-        SetSuggestedTable(Database::"Service Contract Header");
-        SetSuggestedTable(Database::"Service Contract Line");
-        SetSuggestedTable(Database::"Service Document Log");
-        SetSuggestedTable(Database::"Service Item Log");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin

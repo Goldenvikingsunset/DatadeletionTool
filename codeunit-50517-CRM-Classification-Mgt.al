@@ -77,17 +77,6 @@ codeunit 50517 "CRM Classification Mgt."
         ClassifyTable(RecordDeletion, Database::Attendee, 'CRM', 'ToDo', 'Document', 300);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Campaign Entry");
-        SetSuggestedTable(Database::"Contact Duplicate");
-        SetSuggestedTable(Database::"Interaction Log Entry");
-        SetSuggestedTable(Database::"Opportunity Entry");
-        SetSuggestedTable(Database::"Segment Header");
-        SetSuggestedTable(Database::"Segment Line");
-        SetSuggestedTable(Database::"To-do");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionTableType: Enum "Record Deletion Table Type";

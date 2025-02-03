@@ -153,32 +153,6 @@ codeunit 50508 "Sales Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Reminder Level", 'Sales', 'Reminder', 'Setup', 999);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        // Documents
-        SetSuggestedTable(Database::"Sales Header");
-        SetSuggestedTable(Database::"Sales Line");
-        SetSuggestedTable(Database::"Sales Comment Line");
-
-        // History
-        SetSuggestedTable(Database::"Sales Invoice Header");
-        SetSuggestedTable(Database::"Sales Invoice Line");
-        SetSuggestedTable(Database::"Sales Shipment Header");
-        SetSuggestedTable(Database::"Sales Shipment Line");
-        SetSuggestedTable(Database::"Sales Cr.Memo Header");
-        SetSuggestedTable(Database::"Sales Cr.Memo Line");
-
-        // Archive
-        SetSuggestedTable(Database::"Sales Header Archive");
-        SetSuggestedTable(Database::"Sales Line Archive");
-
-        // Reminders
-        SetSuggestedTable(Database::"Reminder Header");
-        SetSuggestedTable(Database::"Reminder Line");
-        SetSuggestedTable(Database::"Issued Reminder Header");
-        SetSuggestedTable(Database::"Issued Reminder Line");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";

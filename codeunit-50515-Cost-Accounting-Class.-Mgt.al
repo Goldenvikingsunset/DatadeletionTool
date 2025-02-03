@@ -42,14 +42,6 @@ codeunit 50515 "Cost Accounting Class. Mgt."
         ClassifyTable(RecordDeletion, Database::"Cost Register", 'CostAccounting', 'Ledger', 'Register', 150);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Cost Entry");
-        SetSuggestedTable(Database::"Cost Budget Entry");
-        SetSuggestedTable(Database::"Cost Journal Line");
-        SetSuggestedTable(Database::"Cost Register");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionTableType: Enum "Record Deletion Table Type";

@@ -32,15 +32,6 @@ codeunit 50519 "Assembly Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Assembly Comment Line", 'Assembly', 'Comment', 'Document', 300);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Assembly Header");
-        SetSuggestedTable(Database::"Assembly Line");
-        SetSuggestedTable(Database::"Posted Assembly Header");
-        SetSuggestedTable(Database::"Posted Assembly Line");
-        SetSuggestedTable(Database::"Assembly Comment Line");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin

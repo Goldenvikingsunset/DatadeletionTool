@@ -85,9 +85,9 @@ codeunit 50509 "Purchase Classification Mgt."
 
     local procedure ClassifyArchive(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, Database::"Purchase Header Archive", 'Purchase', 'Archive', 'Archive', 100);
-        ClassifyTable(RecordDeletion, Database::"Purchase Line Archive", 'Purchase', 'Archive', 'Archive', 100);
-        ClassifyTable(RecordDeletion, Database::"Purch. Comment Line Archive", 'Purchase', 'Archive', 'Archive', 100);
+        ClassifyTable(RecordDeletion, Database::"Purchase Header Archive", 'Purchase', 'History', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Purchase Line Archive", 'Purchase', 'History', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Purch. Comment Line Archive", 'Purchase', 'History', 'History', 200);
     end;
 
     local procedure ClassifyHistory(var RecordDeletion: Record "Record Deletion")
@@ -127,33 +127,6 @@ codeunit 50509 "Purchase Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Requisition Wksh. Name", 'Purchase', 'Planning', 'Setup', 999);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        // Documents and Journals
-        SetSuggestedTable(Database::"Purchase Header");
-        SetSuggestedTable(Database::"Purchase Line");
-        SetSuggestedTable(Database::"Purch. Comment Line");
-        SetSuggestedTable(Database::"Gen. Journal Line");
-        SetSuggestedTable(Database::"Posted Gen. Journal Line");
-
-        // History and Archive
-        SetSuggestedTable(Database::"Purch. Inv. Header");
-        SetSuggestedTable(Database::"Purch. Inv. Line");
-        SetSuggestedTable(Database::"Purch. Rcpt. Header");
-        SetSuggestedTable(Database::"Purch. Rcpt. Line");
-        SetSuggestedTable(Database::"Purch. Cr. Memo Hdr.");
-        SetSuggestedTable(Database::"Purch. Cr. Memo Line");
-        SetSuggestedTable(Database::"Purchase Header Archive");
-        SetSuggestedTable(Database::"Purchase Line Archive");
-
-        // Entries and Buffers
-        SetSuggestedTable(Database::"Vendor Ledger Entry");
-        SetSuggestedTable(Database::"Detailed Vendor Ledg. Entry");
-        SetSuggestedTable(Database::"Vendor Ledger Entry Buffer");
-        SetSuggestedTable(Database::"Prepayment Inv. Line Buffer");
-        SetSuggestedTable(Database::"Vendor Purchase Buffer");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";
@@ -178,12 +151,12 @@ codeunit 50509 "Purchase Classification Mgt."
                 exit(RecordDeletionTableType::Setup);
             'Document':
                 exit(RecordDeletionTableType::Document);
-            'History':
-                exit(RecordDeletionTableType::History);
             'Ledger':
                 exit(RecordDeletionTableType::Ledger);
-            'Archive':
-                exit(RecordDeletionTableType::Archive);
+            'Register':
+                exit(RecordDeletionTableType::Register);
+            'History':
+                exit(RecordDeletionTableType::History);
             else
                 exit(RecordDeletionTableType::" ");
         end;

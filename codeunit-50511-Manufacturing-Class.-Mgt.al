@@ -149,30 +149,6 @@ codeunit 50511 "Manufacturing Class. Mgt."
         ClassifyTable(RecordDeletion, Database::"Machine Center", 'Manufacturing', 'MachineCenter', 'Master', 999);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        // Production Orders
-        SetSuggestedTable(Database::"Production Order");
-        SetSuggestedTable(Database::"Prod. Order Line");
-        SetSuggestedTable(Database::"Prod. Order Component");
-        SetSuggestedTable(Database::"Prod. Order Routing Line");
-        SetSuggestedTable(Database::"Prod. Order Comment Line");
-        SetSuggestedTable(Database::"Prod. Order Routing Personnel");
-        SetSuggestedTable(Database::"Prod. Order Routing Tool");
-
-        // Entries and History
-        SetSuggestedTable(Database::"Capacity Ledger Entry");
-        SetSuggestedTable(Database::"Registered Absence");
-
-        // Documents and Worksheets
-        SetSuggestedTable(Database::"Production Forecast Entry");
-        SetSuggestedTable(Database::"Calendar Entry");
-        SetSuggestedTable(Database::"Production BOM Comment Line");
-        SetSuggestedTable(Database::"Standard Cost Worksheet");
-        SetSuggestedTable(Database::"Family Line");
-        SetSuggestedTable(Database::"Load Buffer");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";

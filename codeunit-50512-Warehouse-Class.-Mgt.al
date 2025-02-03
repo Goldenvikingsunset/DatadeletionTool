@@ -138,20 +138,6 @@ codeunit 50512 "Warehouse Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Whse. Item Tracking Line", 'Warehouse', 'Tracking', 'Document', 300);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Warehouse Activity Header");
-        SetSuggestedTable(Database::"Warehouse Activity Line");
-        SetSuggestedTable(Database::"Warehouse Receipt Header");
-        SetSuggestedTable(Database::"Warehouse Receipt Line");
-        SetSuggestedTable(Database::"Warehouse Shipment Header");
-        SetSuggestedTable(Database::"Warehouse Shipment Line");
-        SetSuggestedTable(Database::"Internal Movement Header");
-        SetSuggestedTable(Database::"Internal Movement Line");
-        SetSuggestedTable(Database::"Warehouse Entry");
-        SetSuggestedTable(Database::"Warehouse Journal Line");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";

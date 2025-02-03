@@ -616,27 +616,6 @@ codeunit 50505 "System Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Workflow User Group Member", 'System', 'Workflow', 'Document', 300);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        // Existing suggestions
-        SetSuggestedTable(Database::"Change Log Entry");
-        SetSuggestedTable(Database::"Job Queue Log Entry");
-        SetSuggestedTable(Database::"Email Item");
-        SetSuggestedTable(Database::"Notification Entry");
-        SetSuggestedTable(Database::"Workflow - Record Change");
-
-        // New suggestions
-        SetSuggestedTable(Database::"Generic Chart Captions Buffer");
-        SetSuggestedTable(Database::"Power BI Chart Buffer");
-        SetSuggestedTable(Database::"Config. Package Data");
-        SetSuggestedTable(Database::"Config. Line");
-        SetSuggestedTable(Database::"Config. Template Line");
-        SetSuggestedTable(Database::"Error Message");
-        SetSuggestedTable(Database::"CAL Test Result");
-        SetSuggestedTable(Database::"Time Series Buffer");
-        SetSuggestedTable(Database::"Application Area Buffer");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";

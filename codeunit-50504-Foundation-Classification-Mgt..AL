@@ -192,26 +192,6 @@ codeunit 50504 "Foundation Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Unit of Measure Translation", 'Foundation', 'UOM', 'Setup', 999);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        // Document type tables
-        SetSuggestedTable(Database::"Comment Line");
-        SetSuggestedTable(Database::"Extended Text Line");
-        SetSuggestedTable(Database::"Base Calendar Change");
-        SetSuggestedTable(Database::"Customized Calendar Change");
-        SetSuggestedTable(Database::"Customized Calendar Entry");
-        SetSuggestedTable(Database::"Document Entry");
-        SetSuggestedTable(Database::"Order Tracking Entry");
-        SetSuggestedTable(Database::"Document Attachment");
-        SetSuggestedTable(Database::"Batch Processing Artifact");
-
-        // Archive/History tables
-        SetSuggestedTable(Database::"Comment Line Archive");
-
-        // Register tables
-        SetSuggestedTable(Database::"Date Compr. Register");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin

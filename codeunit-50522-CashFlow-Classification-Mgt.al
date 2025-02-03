@@ -33,12 +33,6 @@ codeunit 50522 "CashFlow Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Cash Flow Worksheet Line", 'CashFlow', 'Worksheet', 'Document', 300);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"Cash Flow Forecast Entry");
-        SetSuggestedTable(Database::"Cash Flow Worksheet Line");
-        SetSuggestedTable(Database::"Cash Flow Account Comment");
-    end;
 
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin

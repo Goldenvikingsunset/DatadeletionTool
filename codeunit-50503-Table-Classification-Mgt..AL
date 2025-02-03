@@ -104,11 +104,12 @@ codeunit 50503 "Table Classification Core Mgt."
         // Get list of tables to suggest for deletion based on type
         RecordDeletion.Reset();
         RecordDeletion.SetRange(Module, ModuleEnum);
-        RecordDeletion.SetFilter("Table Type", '%1|%2|%3|%4',
-            RecordDeletion."Table Type"::Document,
-            RecordDeletion."Table Type"::History,
-            RecordDeletion."Table Type"::Archive,
-            RecordDeletion."Table Type"::Ledger);
+        RecordDeletion.SetFilter("Table Type", '%1|%2|%3|%4|%5',
+    RecordDeletion."Table Type"::Document,
+    RecordDeletion."Table Type"::History,
+    RecordDeletion."Table Type"::Archive,
+    RecordDeletion."Table Type"::Register,
+    RecordDeletion."Table Type"::Ledger);
 
         if RecordDeletion.FindSet() then
             repeat

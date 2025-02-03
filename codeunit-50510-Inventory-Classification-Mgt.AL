@@ -242,26 +242,6 @@ codeunit 50510 "Inventory Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Reservation Worksheet Log", 'Inventory', 'Reservation', 'Document', 300);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        // Entries
-        SetSuggestedTable(Database::"Item Ledger Entry");
-        SetSuggestedTable(Database::"Value Entry");
-        SetSuggestedTable(Database::"Cost Entry");
-        SetSuggestedTable(Database::"Phys. Inventory Ledger Entry");
-
-        // Documents
-        SetSuggestedTable(Database::"Item Journal Line");
-        SetSuggestedTable(Database::"Phys. Invt. Order Header");
-        SetSuggestedTable(Database::"Phys. Invt. Order Line");
-        SetSuggestedTable(Database::"Item Register");
-
-        // Planning
-        SetSuggestedTable(Database::"Planning Assignment");
-        SetSuggestedTable(Database::"Planning Component");
-        SetSuggestedTable(Database::"Requisition Line");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";
@@ -286,12 +266,12 @@ codeunit 50510 "Inventory Classification Mgt."
                 exit(RecordDeletionTableType::Setup);
             'Document':
                 exit(RecordDeletionTableType::Document);
-            'History':
-                exit(RecordDeletionTableType::History);
             'Ledger':
                 exit(RecordDeletionTableType::Ledger);
             'Register':
                 exit(RecordDeletionTableType::Register);
+            'History':
+                exit(RecordDeletionTableType::History);
             else
                 exit(RecordDeletionTableType::" ");
         end;

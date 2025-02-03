@@ -94,15 +94,6 @@ codeunit 50525 "VAT Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"VAT Reporting Code", 'VAT', 'Setup', 'Setup', 999);
     end;
 
-    procedure SuggestRecordsToDelete()
-    begin
-        SetSuggestedTable(Database::"VAT Entry");
-        SetSuggestedTable(Database::"VAT Report Line");
-        SetSuggestedTable(Database::"ECSL VAT Report Line");
-        SetSuggestedTable(Database::"VAT Registration Log");
-        SetSuggestedTable(Database::"VAT Rate Change Log Entry");
-    end;
-
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin
