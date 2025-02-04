@@ -51,6 +51,12 @@ codeunit 50505 "System Classification Mgt."
     end;
 
 
+    local procedure ClassifyAIAndCopilotTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Image Analysis Setup", 'System', 'AI', 'Setup', 999);
+
+    end;
+
     local procedure ClassifyStructuralTables(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Record Set Definition", 'System', 'Structure', 'Setup', 999);
@@ -69,6 +75,8 @@ codeunit 50505 "System Classification Mgt."
         // Processing
         ClassifyTable(RecordDeletion, Database::"Reten. Pol. Filtering Param", 'System', 'RetentionPolicy', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Reten. Pol. Deleting Param", 'System', 'RetentionPolicy', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Record Deletion", 'System', 'RetentionPolicy', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Record Deletion Rel. Error", 'System', 'RetentionPolicy', 'Document', 300);
     end;
 
     local procedure ClassifyExtensionTables(var RecordDeletion: Record "Record Deletion")
@@ -441,6 +449,15 @@ codeunit 50505 "System Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Power BI Report Labels", 'System', 'PowerBI', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Power BI Context Settings", 'System', 'PowerBI', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Power BI Default Selection", 'System', 'PowerBI', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Power BI Report Configuration", 'System', 'PowerBI', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Power BI Report Buffer", 'System', 'PowerBI', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Power BI User Configuration", 'System', 'PowerBI', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Power BI Report Uploads", 'System', 'PowerBI', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Power BI Customer Reports", 'System', 'PowerBI', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Power BI Displayed Element", 'System', 'PowerBI', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Power BI Selection Element", 'System', 'PowerBI', 'Document', 300);
+
+        ClassifyTable(RecordDeletion, Database::"Power BI User Status", 'System', 'PowerBI', 'Document', 300);
     end;
 
     local procedure ClassifyRapidStartTables(var RecordDeletion: Record "Record Deletion")
@@ -485,6 +502,11 @@ codeunit 50505 "System Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Curr. Exch. Rate Update Setup", 'System', 'Setup', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Option Lookup Buffer", 'System', 'Setup', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Tenant Web Service Columns", 'System', 'Setup', 'Document', 300);
+
+        ClassifyTable(RecordDeletion, Database::"Record Buffer", 'System', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Error Buffer", 'System', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Recorded Event Buffer", 'System', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"TempStack", 'System', 'Buffer', 'Document', 300);
     end;
 
     local procedure ClassifyXMLTables(var RecordDeletion: Record "Record Deletion")

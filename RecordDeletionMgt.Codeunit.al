@@ -62,16 +62,19 @@ codeunit 50500 "Record Deletion Mgt."
                 if not TableMetadata.FindFirst() or
                    (TableMetadata.TableType in [TableMetadata.TableType::Normal,
                                               TableMetadata.TableType::Temporary]) then begin
-                    Clear(RecordDeletion);
-                    if not RecordDeletion.Get(AllObjWithCaption."Object ID") then begin
-                        RecordDeletion.Init();
-                        RecordDeletion."Table ID" := AllObjWithCaption."Object ID";
-                        RecordDeletion.Company := CopyStr(CompanyName, 1, MaxStrLen(RecordDeletion.Company));
-                        RecordDeletion.Insert(true);  // Use InsertAll to ensure all fields are initialized
-                    end;
+                    // Only insert if we can access the table
+                    if CanAccessTable(AllObjWithCaption."Object ID") then begin
+                        Clear(RecordDeletion);
+                        if not RecordDeletion.Get(AllObjWithCaption."Object ID") then begin
+                            RecordDeletion.Init();
+                            RecordDeletion."Table ID" := AllObjWithCaption."Object ID";
+                            RecordDeletion.Company := CopyStr(CompanyName, 1, MaxStrLen(RecordDeletion.Company));
+                            RecordDeletion.Insert(true);
+                        end;
 
-                    // Update record count
-                    UpdateRecordCount(RecordDeletion, AllObjWithCaption, RecRef);
+                        // Update record count
+                        UpdateRecordCount(RecordDeletion, AllObjWithCaption, RecRef);
+                    end;
 
                     Commit();  // Commit after each table to prevent transaction timeout
                 end;
@@ -122,10 +125,39 @@ codeunit 50500 "Record Deletion Mgt."
     var
         RecRef: RecordRef;
     begin
-        if TableId in [0, 1432, 1997, 1998, 3712, 3903, 3905, 5490, 7775, 8700, 8701, 8703, 9004, 9005, 9008, 9011, 9017, 9019, 9022, 9222, 9999] then // Known protected tables
+        if TableId in [
+            // Known protected tables from original list
+            0, 1432, 1997, 1998, 3712, 3903, 3905, 5490, 7775,
+            8700, 8701, 8703, 9004, 9005, 9008, 9011, 9017, 9019,
+            9022, 9222, 9999,
+
+            // Newly identified protected tables
+            1433,    // Net Promoter Score
+            1990 .. 1996,  // Guided Experience/Checklist Items
+            2004, 2010,  // Azure AI Usage, OpenAI Settings
+            3963 .. 3966,  // Regex and Matching tables
+            4150, 4151,  // Blob tables
+            5101, 5102,  // Contact Value, RM Matrix
+            5320 .. 5392,  // Exchange and CRM Integration tables
+            5433,        // Tenant Config Package
+            5555, 5557,  // Permission Conflicts
+            6060,        // Hybrid Deployment
+            6315,        // Power BI Filter
+            6700,        // Exchange Sync
+            6710, 6712,  // Web Service
+            7201 .. 7205,  // CDS/CRM tables
+            7230 .. 7234,  // Master Data Management
+            8887 .. 8930,  // Email tables
+            9010,        // Azure AD User Update
+            9018, 9020,  // Permission Set tables
+            9861, 9862, 9865, // Permission Buffer tables
+            9981 .. 9991,  // Word Template tables
+            9996,        // Upgrade Tag
+            130450 .. 130472    // Test tables
+            ] then
             exit(false);
 
-        // Just attempt to open the table in a normal fashion
+        // Attempt to open the table
         RecRef.OPEN(TableId);
         RecRef.CLOSE;
         exit(true);

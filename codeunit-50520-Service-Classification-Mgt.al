@@ -112,6 +112,10 @@ codeunit 50520 "Service Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Service Cr.Memo Header", 'Service', 'Archive', 'History', 200);
         ClassifyTable(RecordDeletion, Database::"Service Cr.Memo Line", 'Service', 'Archive', 'History', 200);
         ClassifyTable(RecordDeletion, Database::"Service Invoice Line", 'Service', 'Archive', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Service Shipment Buffer", 'Service', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Service Order Posting Buffer", 'Service', 'Buffer', 'Document', 300);
+
+
     end;
 
     local procedure ClassifyStandardServiceTables(var RecordDeletion: Record "Record Deletion")

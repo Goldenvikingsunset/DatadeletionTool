@@ -12,6 +12,16 @@ codeunit 50514 "Integration Class Mgt."
         ClassifyCRMSetupTables(RecordDeletion);
         ClassifyInteractionTables(RecordDeletion);
         ClassifySynchronizationTables(RecordDeletion);
+        ClassifyShopifyPaymentTables(RecordDeletion);
+    end;
+
+    local procedure ClassifyShopifyPaymentTables(var RecordDeletion: Record "Record Deletion")
+    begin
+
+        ClassifyTable(RecordDeletion, Database::"Shpfy Refund Header", 'System', 'Shopify', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Shpfy Refund Line", 'System', 'Shopify', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Shpfy Catalog", 'System', 'Shopify', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Shpfy Catalog Price", 'System', 'Shopify', 'Document', 300);
     end;
 
     local procedure ClassifyIntegrationSetupTables(var RecordDeletion: Record "Record Deletion")
@@ -89,6 +99,9 @@ codeunit 50514 "Integration Class Mgt."
         ClassifyTable(RecordDeletion, Database::"CRM Product", 'Sales', 'D365Sales', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"CRM Quote", 'Sales', 'D365Sales', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"CRM Integration Record", 'System', 'D365Sales', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"O365 HTML Template", 'System', 'Office365', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"O365 Payment Service Logo", 'System', 'Office365', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"O365 Brand Color", 'System', 'Office365', 'Setup', 999);
     end;
 
     local procedure ClassifyDataverse(var RecordDeletion: Record "Record Deletion")

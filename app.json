@@ -138,12 +138,6 @@
       "version": "25.2.27733.28023"
     },
     {
-      "id": "64977288-facd-4a48-aaaa-bb0e288edfb3",
-      "name": "Intrastat GB",
-      "publisher": "Microsoft",
-      "version": "25.2.27733.28023"
-    },
-    {
       "id": "3d5b2137-efeb-4014-8489-41d37f8fd4c3",
       "name": "Late Payment Prediction",
       "publisher": "Microsoft",
@@ -212,6 +206,54 @@
     {
       "id": "ec255f57-31d0-4ca2-b751-f2fa7c745abb",
       "name": "Shopify Connector",
+      "publisher": "Microsoft",
+      "version": "25.2.27733.28023"
+    },
+    {
+      "id": "79b1a79a-2f66-4736-bc1b-8abb3537eb51",
+      "name": "Simplified Bank Statement Import",
+      "publisher": "Microsoft",
+      "version": "25.2.27733.28023"
+    },
+    {
+      "id": "ea130081-c669-460f-a5f4-5dde14f03131",
+      "name": "Statistical Accounts",
+      "publisher": "Microsoft",
+      "version": "25.2.27733.28023"
+    },
+    {
+      "id": "3099ffc7-4cf7-4df6-9b96-7e4bc2bb587c",
+      "name": "Subscription & Recurring Billing",
+      "publisher": "Microsoft",
+      "version": "25.2.27733.28023"
+    },
+    {
+      "id": "b3780cd9-f8f8-4a83-a4d5-0c2ad87b28af",
+      "name": "Sustainability",
+      "publisher": "Microsoft",
+      "version": "25.2.27733.28023"
+    },
+    {
+      "id": "2654d7e7-9afd-4947-9e02-6bb8f3e0cd04",
+      "name": "Universal Print Integration",
+      "publisher": "Microsoft",
+      "version": "25.2.27733.28023"
+    },
+    {
+      "id": "7961e9dc-a8e5-49b1-839b-3a78803a4cb8",
+      "name": "Troubleshoot FA Ledger Entries",
+      "publisher": "Microsoft",
+      "version": "25.2.27733.28023"
+    },
+    {
+      "id": "c50a4bf0-db51-4ad2-88d5-fe2287da0eb8",
+      "name": "VAT Group Management",
+      "publisher": "Microsoft",
+      "version": "25.2.27733.28023"
+    },
+    {
+      "id": "bae453ed-0fd8-4416-afdc-4b09db6c12c3",
+      "name": "WorldPay Payments Standard",
       "publisher": "Microsoft",
       "version": "25.2.27733.28023"
     }

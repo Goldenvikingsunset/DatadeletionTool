@@ -22,7 +22,19 @@ codeunit 50510 "Inventory Classification Mgt."
         ClassifyInventoryCostingTables(RecordDeletion);
         ClassifyInventoryPeriodTables(RecordDeletion);
         ClassifyTransferTables(RecordDeletion);
+        ClassifyInventoryBufferTables(RecordDeletion);
     end;
+
+    local procedure ClassifyInventoryBufferTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Inventory Event Buffer", 'Inventory', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Inventory Page Data", 'Inventory', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Inventory Comment Line", 'Inventory', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Inventory Adjustment Buffer", 'Inventory', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Item Journal Buffer", 'Inventory', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Phys. Invt. Comment Line", 'Inventory', 'Buffer', 'Document', 300);
+    end;
+
 
     local procedure ClassifyTransferTables(var RecordDeletion: Record "Record Deletion")
     begin
@@ -147,6 +159,7 @@ codeunit 50510 "Inventory Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Transfer Shipment Line", 'Inventory', 'Transfer', 'History', 200);
         ClassifyTable(RecordDeletion, Database::"Transfer Receipt Header", 'Inventory', 'Transfer', 'History', 200);
         ClassifyTable(RecordDeletion, Database::"Transfer Receipt Line", 'Inventory', 'Transfer', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Inventory Adjmt. Entry (Order)", 'Inventory', 'Transfer', 'Register', 150);
     end;
 
     local procedure ClassifyInventorySetup(var RecordDeletion: Record "Record Deletion")

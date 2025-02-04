@@ -38,6 +38,140 @@ codeunit 50513 "Utility Classification Mgt."
         ClassifySalesAITables(RecordDeletion);
         ClassifyEmailPrinterTables(RecordDeletion);
         ClassifyShopifyTables(RecordDeletion);
+        ClassifyBankImportTables(RecordDeletion);
+        ClassifyStatisticalAccountTables(RecordDeletion);
+        ClassifySubscriptionBillingTables(RecordDeletion);
+        ClassifySustainabilityTables(RecordDeletion);
+        ClassifyFATroubleshootTables(RecordDeletion);
+        ClassifyUniversalPrintTables(RecordDeletion);
+        ClassifyVATGroupTables(RecordDeletion);
+        ClassifyWorldPayTables(RecordDeletion);
+    end;
+
+    local procedure ClassifyFATroubleshootTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 6090, 'System', 'FATroubleshoot', 'Document', 300); // FA Ledg. Entry w. Issue
+    end;
+
+    local procedure ClassifyUniversalPrintTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 2751, 'System', 'UniversalPrint', 'Setup', 999); // Universal Printer Settings
+        ClassifyTable(RecordDeletion, 2752, 'System', 'UniversalPrint', 'Document', 300); // Universal Print Share Buffer
+    end;
+
+    local procedure ClassifyVATGroupTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 4700, 'System', 'VATGroup', 'Setup', 999); // VAT Group Approved Member
+        ClassifyTable(RecordDeletion, 4701, 'System', 'VATGroup', 'Document', 300); // VAT Group Calculation
+        ClassifyTable(RecordDeletion, 4702, 'System', 'VATGroup', 'Document', 300); // VAT Group Submission Header
+        ClassifyTable(RecordDeletion, 4703, 'System', 'VATGroup', 'Document', 300); // VAT Group Submission Line
+    end;
+
+    local procedure ClassifyWorldPayTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 1360, 'System', 'WorldPay', 'Setup', 999); // MS - WorldPay Standard Account
+        ClassifyTable(RecordDeletion, 1361, 'System', 'WorldPay', 'Setup', 999); // MS - WorldPay Std. Template
+        ClassifyTable(RecordDeletion, 1367, 'System', 'WorldPay', 'Document', 300); // MS - WorldPay Transaction
+    end;
+
+    local procedure ClassifyBankImportTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 8850, 'System', 'BankImport', 'Document', 300); // Bank Statement Import Preview
+    end;
+
+    local procedure ClassifyStatisticalAccountTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 2620, 'System', 'StatAccounts', 'Document', 300); // Stat. Acc. Balance Buffer
+        ClassifyTable(RecordDeletion, 2630, 'System', 'StatAccounts', 'Setup', 999); // Statistical Acc. Journal Batch  
+        ClassifyTable(RecordDeletion, 2631, 'System', 'StatAccounts', 'Document', 300); // Statistical Acc. Journal Line
+        ClassifyTable(RecordDeletion, 2632, 'System', 'StatAccounts', 'Master', 999); // Statistical Account
+        ClassifyTable(RecordDeletion, 2633, 'System', 'StatAccounts', 'Ledger', 100); // Statistical Ledger Entry
+    end;
+
+    local procedure ClassifySubscriptionBillingTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        // Setup Tables
+        ClassifyTable(RecordDeletion, 8051, 'System', 'Subscription', 'Setup', 999); // Service Contract Setup
+        ClassifyTable(RecordDeletion, 8054, 'System', 'Subscription', 'Setup', 999); // Service Commitment Template
+        ClassifyTable(RecordDeletion, 8053, 'System', 'Subscription', 'Setup', 999); // Contract Type
+        ClassifyTable(RecordDeletion, 8055, 'System', 'Subscription', 'Setup', 999); // Service Commitment Package
+        ClassifyTable(RecordDeletion, 8056, 'System', 'Subscription', 'Setup', 999); // Service Comm. Package Line
+        ClassifyTable(RecordDeletion, 8060, 'System', 'Subscription', 'Setup', 999); // Billing Template
+
+        // Master Data
+        ClassifyTable(RecordDeletion, 8057, 'System', 'Subscription', 'Master', 999); // Service Object
+        ClassifyTable(RecordDeletion, 8058, 'System', 'Subscription', 'Setup', 999); // Item Serv. Commitment Package
+        ClassifyTable(RecordDeletion, 8005, 'System', 'Subscription', 'Setup', 999); // Item Templ. Serv. Comm. Pack.
+
+        // Contract Documents
+        ClassifyTable(RecordDeletion, 8052, 'System', 'Subscription', 'Document', 300); // Customer Contract
+        ClassifyTable(RecordDeletion, 8062, 'System', 'Subscription', 'Document', 300); // Customer Contract Line
+        ClassifyTable(RecordDeletion, 8063, 'System', 'Subscription', 'Document', 300); // Vendor Contract
+        ClassifyTable(RecordDeletion, 8065, 'System', 'Subscription', 'Document', 300); // Vendor Contract Line
+        ClassifyTable(RecordDeletion, 8066, 'System', 'Subscription', 'Document', 300); // Customer Contract Deferral
+        ClassifyTable(RecordDeletion, 8072, 'System', 'Subscription', 'Document', 300); // Vendor Contract Deferral
+
+        // Service Commitments
+        ClassifyTable(RecordDeletion, 8059, 'System', 'Subscription', 'Document', 300); // Service Commitment
+        ClassifyTable(RecordDeletion, 8068, 'System', 'Subscription', 'Document', 300); // Sales Service Commitment
+        ClassifyTable(RecordDeletion, 8069, 'System', 'Subscription', 'History', 200); // Sales Service Comm. Archive
+        ClassifyTable(RecordDeletion, 8073, 'System', 'Subscription', 'History', 200); // Service Commitment Archive
+
+        // Billing
+        ClassifyTable(RecordDeletion, 8061, 'System', 'Subscription', 'Document', 300); // Billing Line
+        ClassifyTable(RecordDeletion, 8064, 'System', 'Subscription', 'History', 200); // Billing Line Archive
+
+        // Usage Data
+        ClassifyTable(RecordDeletion, 8006, 'System', 'Subscription', 'Document', 300); // Usage Data Billing
+        ClassifyTable(RecordDeletion, 8011, 'System', 'Subscription', 'Document', 300); // Usage Data Blob
+        ClassifyTable(RecordDeletion, 8012, 'System', 'Subscription', 'Document', 300); // Usage Data Customer
+        ClassifyTable(RecordDeletion, 8013, 'System', 'Subscription', 'Document', 300); // Usage Data Import
+        ClassifyTable(RecordDeletion, 8014, 'System', 'Subscription', 'Document', 300); // Usage Data Supplier
+        ClassifyTable(RecordDeletion, 8015, 'System', 'Subscription', 'Document', 300); // Usage Data Supplier Reference
+        ClassifyTable(RecordDeletion, 8016, 'System', 'Subscription', 'Document', 300); // Usage Data Subscription
+
+        // Miscellaneous
+        ClassifyTable(RecordDeletion, 8000, 'System', 'Subscription', 'Setup', 999); // Field Translation
+        ClassifyTable(RecordDeletion, 8001, 'System', 'Subscription', 'Document', 300); // Contract Renewal Line
+        ClassifyTable(RecordDeletion, 8002, 'System', 'Subscription', 'Document', 300); // Planned Service Commitment
+        ClassifyTable(RecordDeletion, 8003, 'System', 'Subscription', 'Setup', 999); // Price Update Template
+        ClassifyTable(RecordDeletion, 8004, 'System', 'Subscription', 'Document', 300); // Contract Price Update Line
+        ClassifyTable(RecordDeletion, 8007, 'System', 'Subscription', 'Document', 300); // Overdue Service Commitments
+        ClassifyTable(RecordDeletion, 8017, 'System', 'Subscription', 'Setup', 999); // Generic Import Settings
+        ClassifyTable(RecordDeletion, 8018, 'System', 'Subscription', 'Document', 300); // Usage Data Generic Import
+        ClassifyTable(RecordDeletion, 8019, 'System', 'Subscription', 'Document', 300); // Contract Analysis Entry
+        ClassifyTable(RecordDeletion, 8020, 'System', 'Subscription', 'Document', 300); // Sales Service Commitment Buff.
+        ClassifyTable(RecordDeletion, 8070, 'System', 'Subscription', 'Document', 300); // Subscription Billing Cue
+    end;
+
+    local procedure ClassifySustainabilityTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        // Master/Setup
+        ClassifyTable(RecordDeletion, 6210, 'System', 'Sustainability', 'Master', 999); // Sustainability Account
+        ClassifyTable(RecordDeletion, 6211, 'System', 'Sustainability', 'Setup', 999); // Sustain. Account Category
+        ClassifyTable(RecordDeletion, 6212, 'System', 'Sustainability', 'Setup', 999); // Sustain. Account Subcategory
+        ClassifyTable(RecordDeletion, 6217, 'System', 'Sustainability', 'Setup', 999); // Sustainability Setup
+        ClassifyTable(RecordDeletion, 6223, 'System', 'Sustainability', 'Setup', 999); // Sust. Certificate Standard
+        ClassifyTable(RecordDeletion, 6224, 'System', 'Sustainability', 'Setup', 999); // Sust. Certificate Area
+
+        // Journal
+        ClassifyTable(RecordDeletion, 6213, 'System', 'Sustainability', 'Setup', 999); // Sustainability Jnl. Batch
+        ClassifyTable(RecordDeletion, 6214, 'System', 'Sustainability', 'Document', 300); // Sustainability Jnl. Line
+        ClassifyTable(RecordDeletion, 6215, 'System', 'Sustainability', 'Setup', 999); // Sustainability Jnl. Template
+
+        // Ledger/Analysis
+        ClassifyTable(RecordDeletion, 6216, 'System', 'Sustainability', 'Ledger', 100); // Sustainability Ledger Entry
+        ClassifyTable(RecordDeletion, 6225, 'System', 'Sustainability', 'Document', 300); // Sust. Account (Analysis View)
+
+        // Goals/Scorecards
+        ClassifyTable(RecordDeletion, 6218, 'System', 'Sustainability', 'Document', 300); // Sustainability Scorecard
+        ClassifyTable(RecordDeletion, 6219, 'System', 'Sustainability', 'Document', 300); // Sustainability Goal
+        ClassifyTable(RecordDeletion, 6220, 'System', 'Sustainability', 'Document', 300); // Sustainability Cue
+        ClassifyTable(RecordDeletion, 6221, 'System', 'Sustainability', 'Document', 300); // Sustainability Goal Cue
+
+        // Certificates
+        ClassifyTable(RecordDeletion, 6222, 'System', 'Sustainability', 'Document', 300); // Sustainability Certificate
+        ClassifyTable(RecordDeletion, 6226, 'System', 'Sustainability', 'Document', 300); // Emission Fee
     end;
 
     local procedure ClassifyEmailPrinterTables(var RecordDeletion: Record "Record Deletion")

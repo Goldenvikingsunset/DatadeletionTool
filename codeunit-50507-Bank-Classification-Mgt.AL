@@ -12,6 +12,12 @@ codeunit 50507 "Bank Classification Mgt."
         ClassifyUKMTDTables(RecordDeletion);
     end;
 
+    local procedure ClassifyBankTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        // Documents
+        ClassifyTable(RecordDeletion, Database::"Bank Acc. Rec. Match Buffer", 'Bank', 'Matching', 'Document', 300);
+    end;
+
     local procedure ClassifyUKMTDTables(var RecordDeletion: Record "Record Deletion")
     begin
         // MTD Current
