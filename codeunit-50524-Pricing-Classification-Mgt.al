@@ -1,14 +1,22 @@
 codeunit 50524 "Pricing Classification Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
+        // Core Pricing
         ClassifyPriceList(RecordDeletion);
         ClassifyCalculation(RecordDeletion);
+
+        // Reference Data
         ClassifyAsset(RecordDeletion);
         ClassifySource(RecordDeletion);
+
+        // Processing
         ClassifyWorksheet(RecordDeletion);
     end;
+    #endregion
 
+    #region Core Pricing
     local procedure ClassifyPriceList(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Price List Header", 'Pricing', 'PriceList', 'Master', 999);
@@ -23,7 +31,9 @@ codeunit 50524 "Pricing Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Price Calculation Buffer", 'Pricing', 'Calculation', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Dtld. Price Calculation Setup", 'Pricing', 'Calculation', 'Setup', 999);
     end;
+    #endregion
 
+    #region Reference Data
     local procedure ClassifyAsset(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Price Asset", 'Pricing', 'Asset', 'Master', 999);
@@ -33,12 +43,16 @@ codeunit 50524 "Pricing Classification Mgt."
     begin
         ClassifyTable(RecordDeletion, Database::"Price Source", 'Pricing', 'Source', 'Master', 999);
     end;
+    #endregion
 
+    #region Processing
     local procedure ClassifyWorksheet(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Price Worksheet Line", 'Pricing', 'Worksheet', 'Document', 300);
     end;
+    #endregion
 
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin
@@ -76,4 +90,5 @@ codeunit 50524 "Pricing Classification Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }

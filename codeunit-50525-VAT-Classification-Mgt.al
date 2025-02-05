@@ -1,19 +1,36 @@
 codeunit 50525 "VAT Classification Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
+        // Core VAT
+        ClassifySetup(RecordDeletion);
+        ClassifyVATTables(RecordDeletion);
         ClassifyCalculation(RecordDeletion);
-        ClassifyClause(RecordDeletion);
+
+        // VAT Processing
         ClassifyLedger(RecordDeletion);
+        ClassifyClause(RecordDeletion);
         ClassifyRateChange(RecordDeletion);
+
+        // VAT Compliance
         ClassifyRegistration(RecordDeletion);
         ClassifyReporting(RecordDeletion);
-        ClassifySetup(RecordDeletion);
+
+        // Additional VAT
         ClassifyVATRelated(RecordDeletion);
-        ClassifyVATTables(RecordDeletion);
     end;
+    #endregion
 
-
+    #region Core VAT
+    local procedure ClassifySetup(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"VAT Setup", 'VAT', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"VAT Posting Setup", 'VAT', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"VAT Business Posting Group", 'VAT', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"VAT Product Posting Group", 'VAT', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"VAT Reporting Code", 'VAT', 'Setup', 'Setup', 999);
+    end;
 
     local procedure ClassifyVATTables(var RecordDeletion: Record "Record Deletion")
     begin
@@ -22,19 +39,17 @@ codeunit 50525 "VAT Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"VAT Assisted Setup Bus. Grp.", 'VAT', 'Setup', 'Setup', 999);
     end;
 
-    local procedure ClassifyVATRelated(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Alt. Cust. VAT Reg.", 'VAT', 'Registration', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"ECSL VAT Report Line Relation", 'VAT', 'Reporting', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"VAT Reg. No. Srv. Template", 'VAT', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"VAT Reg. No. Srv Config", 'VAT', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"VAT Statement Template", 'VAT', 'Reporting', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"VAT Amount Line", 'VAT', 'Document', 'Document', 300);
-    end;
-
     local procedure ClassifyCalculation(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"VAT Posting Parameters", 'VAT', 'Calculation', 'Setup', 999);
+    end;
+    #endregion
+
+    #region VAT Processing
+    local procedure ClassifyLedger(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"VAT Entry", 'VAT', 'Ledger', 'Ledger', 100);
+        ClassifyTable(RecordDeletion, Database::"G/L Entry - VAT Entry Link", 'VAT', 'Ledger', 'Ledger', 100);
     end;
 
     local procedure ClassifyClause(var RecordDeletion: Record "Record Deletion")
@@ -45,19 +60,15 @@ codeunit 50525 "VAT Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"VAT Clause by Doc. Type Trans.", 'VAT', 'Setup', 'Setup', 999);
     end;
 
-    local procedure ClassifyLedger(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"VAT Entry", 'VAT', 'Ledger', 'Ledger', 100);
-        ClassifyTable(RecordDeletion, Database::"G/L Entry - VAT Entry Link", 'VAT', 'Ledger', 'Ledger', 100);
-    end;
-
     local procedure ClassifyRateChange(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"VAT Rate Change Setup", 'VAT', 'RateChange', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"VAT Rate Change Conversion", 'VAT', 'RateChange', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"VAT Rate Change Log Entry", 'VAT', 'RateChange', 'History', 200);
     end;
+    #endregion
 
+    #region VAT Compliance
     local procedure ClassifyRegistration(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"VAT Registration Log", 'VAT', 'Registration', 'History', 200);
@@ -67,33 +78,41 @@ codeunit 50525 "VAT Classification Mgt."
 
     local procedure ClassifyReporting(var RecordDeletion: Record "Record Deletion")
     begin
+        // Core Documents
         ClassifyTable(RecordDeletion, Database::"VAT Report Header", 'VAT', 'Reporting', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"VAT Report Line", 'VAT', 'Reporting', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"VAT Report Archive", 'VAT', 'Reporting', 'Archive', 100);
+
+        // Statement Setup
         ClassifyTable(RecordDeletion, Database::"VAT Statement Line", 'VAT', 'Reporting', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"VAT Statement Name", 'VAT', 'Reporting', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"ECSL VAT Report Line", 'VAT', 'Reporting', 'Document', 300);
 
-        // Setup
+        // Reporting Setup
         ClassifyTable(RecordDeletion, Database::"VAT Return Period", 'VAT', 'Reporting', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"VAT Report Setup", 'VAT', 'Reporting', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"VAT Reports Configuration", 'VAT', 'Reporting', 'Setup', 999);
 
-        // Documents
+        // Additional Documents
         ClassifyTable(RecordDeletion, Database::"VAT Statement Report Line", 'VAT', 'Reporting', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"VAT Report Line Relation", 'VAT', 'Reporting', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"VAT Report Error Log", 'VAT', 'Reporting', 'Document', 300);
     end;
+    #endregion
 
-    local procedure ClassifySetup(var RecordDeletion: Record "Record Deletion")
+    #region Additional VAT
+    local procedure ClassifyVATRelated(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, Database::"VAT Setup", 'VAT', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"VAT Posting Setup", 'VAT', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"VAT Business Posting Group", 'VAT', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"VAT Product Posting Group", 'VAT', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"VAT Reporting Code", 'VAT', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Alt. Cust. VAT Reg.", 'VAT', 'Registration', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"ECSL VAT Report Line Relation", 'VAT', 'Reporting', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"VAT Reg. No. Srv. Template", 'VAT', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"VAT Reg. No. Srv Config", 'VAT', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"VAT Statement Template", 'VAT', 'Reporting', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"VAT Amount Line", 'VAT', 'Document', 'Document', 300);
     end;
+    #endregion
 
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin
@@ -135,4 +154,5 @@ codeunit 50525 "VAT Classification Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }

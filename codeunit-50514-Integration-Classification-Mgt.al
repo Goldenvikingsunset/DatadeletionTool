@@ -1,32 +1,33 @@
 codeunit 50514 "Integration Class Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
+        // Core Integration
+        ClassifyIntegrationSetupTables(RecordDeletion);
+        ClassifySynchEngine(RecordDeletion);
+        ClassifyEntity(RecordDeletion);
+
+        // Microsoft Cloud Services
         ClassifyD365Sales(RecordDeletion);
         ClassifyDataverse(RecordDeletion);
-        ClassifyEntity(RecordDeletion);
         ClassifyPowerBI(RecordDeletion);
-        ClassifySynchEngine(RecordDeletion);
-        ClassifyIntegrationSetupTables(RecordDeletion);
-        ClassifyCRMDocumentTables(RecordDeletion);
+
+        // CRM Integration
         ClassifyCRMSetupTables(RecordDeletion);
+        ClassifyCRMDocumentTables(RecordDeletion);
         ClassifyInteractionTables(RecordDeletion);
         ClassifySynchronizationTables(RecordDeletion);
+
+        // Third-Party Integration
         ClassifyShopifyPaymentTables(RecordDeletion);
     end;
+    #endregion
 
-    local procedure ClassifyShopifyPaymentTables(var RecordDeletion: Record "Record Deletion")
-    begin
-
-        ClassifyTable(RecordDeletion, Database::"Shpfy Refund Header", 'System', 'Shopify', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Shpfy Refund Line", 'System', 'Shopify', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Shpfy Catalog", 'System', 'Shopify', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Shpfy Catalog Price", 'System', 'Shopify', 'Document', 300);
-    end;
-
+    #region Core Integration
     local procedure ClassifyIntegrationSetupTables(var RecordDeletion: Record "Record Deletion")
     begin
-        // Core Integration Setup - System module
+        // Core Integration Setup
         ClassifyTable(RecordDeletion, Database::"CRM Connection Setup", 'System', 'Setup', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Integration Table Mapping", 'System', 'Setup', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Integration Field Mapping", 'System', 'Setup', 'Setup', 999);
@@ -39,6 +40,50 @@ codeunit 50514 "Integration Class Mgt."
         ClassifyTable(RecordDeletion, Database::"Man. Int. Field Mapping", 'System', 'Setup', 'Setup', 999);
     end;
 
+    local procedure ClassifySynchEngine(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Integration Field Mapping", 'System', 'SynchEngine', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Integration Synch. Job", 'System', 'SynchEngine', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Integration Table Mapping", 'System', 'SynchEngine', 'Setup', 999);
+    end;
+
+    local procedure ClassifyEntity(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Dataverse Entity Change", 'System', 'Entity', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Entity Text", 'System', 'Entity', 'Setup', 999);
+    end;
+    #endregion
+
+    #region Microsoft Cloud Services
+    local procedure ClassifyD365Sales(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"CDS BC Table Relation", 'System', 'D365Sales', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"CDS Company", 'System', 'D365Sales', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"CRM Account", 'Sales', 'D365Sales', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"CRM Product", 'Sales', 'D365Sales', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"CRM Quote", 'Sales', 'D365Sales', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"CRM Integration Record", 'System', 'D365Sales', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"O365 HTML Template", 'System', 'Office365', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"O365 Payment Service Logo", 'System', 'Office365', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"O365 Brand Color", 'System', 'Office365', 'Setup', 999);
+    end;
+
+    local procedure ClassifyDataverse(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"CDS Connection Setup", 'System', 'Dataverse', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"CDS BC Table Relation", 'System', 'Dataverse', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"CDS Field Security Profile", 'System', 'Dataverse', 'Setup', 999);
+    end;
+
+    local procedure ClassifyPowerBI(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Power BI Chart Buffer", 'System', 'PowerBI', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Power BI Report Labels", 'System', 'PowerBI', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Power BI Default Selection", 'System', 'PowerBI', 'Setup', 999);
+    end;
+    #endregion
+
+    #region CRM Integration
     local procedure ClassifyCRMDocumentTables(var RecordDeletion: Record "Record Deletion")
     begin
         // CRM Documents - Sales module since they're sales-related
@@ -90,47 +135,19 @@ codeunit 50514 "Integration Class Mgt."
         ClassifyTable(RecordDeletion, Database::"CRM Full Synch. Review Line", 'System', 'Sync', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"CRM Synch. Conflict Buffer", 'System', 'Sync', 'Document', 300);
     end;
+    #endregion
 
-    local procedure ClassifyD365Sales(var RecordDeletion: Record "Record Deletion")
+    #region Third-Party Integration
+    local procedure ClassifyShopifyPaymentTables(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, Database::"CDS BC Table Relation", 'System', 'D365Sales', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"CDS Company", 'System', 'D365Sales', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"CRM Account", 'Sales', 'D365Sales', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"CRM Product", 'Sales', 'D365Sales', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"CRM Quote", 'Sales', 'D365Sales', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"CRM Integration Record", 'System', 'D365Sales', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"O365 HTML Template", 'System', 'Office365', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"O365 Payment Service Logo", 'System', 'Office365', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"O365 Brand Color", 'System', 'Office365', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Shpfy Refund Header", 'System', 'Shopify', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Shpfy Refund Line", 'System', 'Shopify', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Shpfy Catalog", 'System', 'Shopify', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Shpfy Catalog Price", 'System', 'Shopify', 'Document', 300);
     end;
+    #endregion
 
-    local procedure ClassifyDataverse(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"CDS Connection Setup", 'System', 'Dataverse', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"CDS BC Table Relation", 'System', 'Dataverse', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"CDS Field Security Profile", 'System', 'Dataverse', 'Setup', 999);
-    end;
-
-    local procedure ClassifyEntity(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Dataverse Entity Change", 'System', 'Entity', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Entity Text", 'System', 'Entity', 'Setup', 999);
-    end;
-
-    local procedure ClassifyPowerBI(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Power BI Chart Buffer", 'System', 'PowerBI', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Power BI Report Labels", 'System', 'PowerBI', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Power BI Default Selection", 'System', 'PowerBI', 'Setup', 999);
-    end;
-
-    local procedure ClassifySynchEngine(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Integration Field Mapping", 'System', 'SynchEngine', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Integration Synch. Job", 'System', 'SynchEngine', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Integration Table Mapping", 'System', 'SynchEngine', 'Setup', 999);
-    end;
-
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";
@@ -175,4 +192,5 @@ codeunit 50514 "Integration Class Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }

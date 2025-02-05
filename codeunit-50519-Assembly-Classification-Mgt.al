@@ -1,13 +1,19 @@
 codeunit 50519 "Assembly Classification Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
+        // Core Assembly
         ClassifyAssemblyDoc(RecordDeletion);
         ClassifyAssemblyHistory(RecordDeletion);
+
+        // Setup & Comments
         ClassifyAssemblySetup(RecordDeletion);
         ClassifyAssemblyComments(RecordDeletion);
     end;
+    #endregion
 
+    #region Core Assembly
     local procedure ClassifyAssemblyDoc(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Assembly Header", 'Assembly', 'Document', 'Document', 300);
@@ -21,7 +27,9 @@ codeunit 50519 "Assembly Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Posted Assembly Line", 'Assembly', 'History', 'History', 200);
         ClassifyTable(RecordDeletion, Database::"Posted Assemble-to-Order Link", 'Assembly', 'History', 'History', 200);
     end;
+    #endregion
 
+    #region Setup & Comments
     local procedure ClassifyAssemblySetup(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Assembly Setup", 'Assembly', 'Setup', 'Setup', 999);
@@ -31,7 +39,9 @@ codeunit 50519 "Assembly Classification Mgt."
     begin
         ClassifyTable(RecordDeletion, Database::"Assembly Comment Line", 'Assembly', 'Comment', 'Document', 300);
     end;
+    #endregion
 
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin
@@ -69,4 +79,5 @@ codeunit 50519 "Assembly Classification Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }

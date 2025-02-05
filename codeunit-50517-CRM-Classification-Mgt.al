@@ -1,32 +1,28 @@
 codeunit 50517 "CRM Classification Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyBusinessRelation(RecordDeletion);
-        ClassifyCampaign(RecordDeletion);
+        // Master Data
         ClassifyContact(RecordDeletion);
-        ClassifyDuplicates(RecordDeletion);
-        ClassifyInteraction(RecordDeletion);
+        ClassifyBusinessRelation(RecordDeletion);
+
+        // Marketing & Sales
+        ClassifyCampaign(RecordDeletion);
         ClassifyOpportunity(RecordDeletion);
-        ClassifyProfiling(RecordDeletion);
         ClassifySegment(RecordDeletion);
+
+        // Interaction Management
+        ClassifyInteraction(RecordDeletion);
         ClassifyToDo(RecordDeletion);
-    end;
 
-    local procedure ClassifyBusinessRelation(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Business Relation", 'CRM', 'BusinessRelation', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Contact Business Relation", 'CRM', 'BusinessRelation', 'Master', 999);
+        // Data Quality
+        ClassifyDuplicates(RecordDeletion);
+        ClassifyProfiling(RecordDeletion);
     end;
+    #endregion
 
-    local procedure ClassifyCampaign(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::Campaign, 'CRM', 'Campaign', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Campaign Entry", 'CRM', 'Campaign', 'Ledger', 100);
-        ClassifyTable(RecordDeletion, Database::"Campaign Status", 'CRM', 'Campaign', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Campaign Target Group", 'CRM', 'Campaign', 'Document', 300);
-    end;
-
+    #region Master Data
     local procedure ClassifyContact(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::Contact, 'CRM', 'Contact', 'Master', 999);
@@ -35,18 +31,20 @@ codeunit 50517 "CRM Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Contact Industry Group", 'CRM', 'Contact', 'Setup', 999);
     end;
 
-    local procedure ClassifyDuplicates(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyBusinessRelation(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, Database::"Duplicate Search String Setup", 'CRM', 'Duplicates', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Contact Duplicate", 'CRM', 'Duplicates', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Business Relation", 'CRM', 'BusinessRelation', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Contact Business Relation", 'CRM', 'BusinessRelation', 'Master', 999);
     end;
+    #endregion
 
-    local procedure ClassifyInteraction(var RecordDeletion: Record "Record Deletion")
+    #region Marketing & Sales
+    local procedure ClassifyCampaign(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, Database::Attachment, 'CRM', 'Interaction', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Interaction Log Entry", 'CRM', 'Interaction', 'Ledger', 100);
-        ClassifyTable(RecordDeletion, Database::"Interaction Template", 'CRM', 'Interaction', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Interaction Template Setup", 'CRM', 'Interaction', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::Campaign, 'CRM', 'Campaign', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Campaign Entry", 'CRM', 'Campaign', 'Ledger', 100);
+        ClassifyTable(RecordDeletion, Database::"Campaign Status", 'CRM', 'Campaign', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Campaign Target Group", 'CRM', 'Campaign', 'Document', 300);
     end;
 
     local procedure ClassifyOpportunity(var RecordDeletion: Record "Record Deletion")
@@ -57,17 +55,21 @@ codeunit 50517 "CRM Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Sales Cycle Stage", 'CRM', 'Opportunity', 'Setup', 999);
     end;
 
-    local procedure ClassifyProfiling(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Profile Questionnaire Header", 'CRM', 'Profiling', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Profile Questionnaire Line", 'CRM', 'Profiling', 'Document', 300);
-    end;
-
     local procedure ClassifySegment(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Segment Header", 'CRM', 'Segment', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Segment Line", 'CRM', 'Segment', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Segment History", 'CRM', 'Segment', 'History', 200);
+    end;
+    #endregion
+
+    #region Interaction Management
+    local procedure ClassifyInteraction(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::Attachment, 'CRM', 'Interaction', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Interaction Log Entry", 'CRM', 'Interaction', 'Ledger', 100);
+        ClassifyTable(RecordDeletion, Database::"Interaction Template", 'CRM', 'Interaction', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Interaction Template Setup", 'CRM', 'Interaction', 'Setup', 999);
     end;
 
     local procedure ClassifyToDo(var RecordDeletion: Record "Record Deletion")
@@ -76,7 +78,23 @@ codeunit 50517 "CRM Classification Mgt."
         ClassifyTable(RecordDeletion, Database::Activity, 'CRM', 'ToDo', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::Attendee, 'CRM', 'ToDo', 'Document', 300);
     end;
+    #endregion
 
+    #region Data Quality
+    local procedure ClassifyDuplicates(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Duplicate Search String Setup", 'CRM', 'Duplicates', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Contact Duplicate", 'CRM', 'Duplicates', 'Document', 300);
+    end;
+
+    local procedure ClassifyProfiling(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Profile Questionnaire Header", 'CRM', 'Profiling', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Profile Questionnaire Line", 'CRM', 'Profiling', 'Document', 300);
+    end;
+    #endregion
+
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionTableType: Enum "Record Deletion Table Type";
@@ -118,4 +136,5 @@ codeunit 50517 "CRM Classification Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }

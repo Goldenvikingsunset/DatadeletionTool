@@ -1,31 +1,34 @@
 codeunit 50521 "Projects Classification Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
+        // Job Management
         ClassifyJob(RecordDeletion);
-        ClassifyLedger(RecordDeletion);
-        ClassifyJournal(RecordDeletion);
         ClassifyPlanning(RecordDeletion);
         ClassifyWIP(RecordDeletion);
+
+        // Resource Management
         ClassifyResource(RecordDeletion);
-        ClassifyTimesheet(RecordDeletion);
         ClassifyResourceTables(RecordDeletion);
         ClassifyResourcePricing(RecordDeletion);
-    end;
+        ClassifyTimesheet(RecordDeletion);
 
-    local procedure ClassifyResourcePricing(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Resource Price", 'Project', 'Resource', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Resource Cost", 'Project', 'Resource', 'Master', 999);
+        // Financial Tracking
+        ClassifyLedger(RecordDeletion);
+        ClassifyJournal(RecordDeletion);
     end;
+    #endregion
 
+    #region Job Management
     local procedure ClassifyJob(var RecordDeletion: Record "Record Deletion")
     begin
+        // Core Job Data
         ClassifyTable(RecordDeletion, Database::Job, 'Project', 'Job', 'Master', 999);
         ClassifyTable(RecordDeletion, Database::"Job Task", 'Project', 'Job', 'Master', 999);
         ClassifyTable(RecordDeletion, Database::"Job Task Dimension", 'Project', 'Job', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Job Archive", 'Project', 'Job', 'Archive', 200);
         ClassifyTable(RecordDeletion, Database::"Jobs Setup", 'Project', 'Job', 'Setup', 999);
+
         // Job Pricing
         ClassifyTable(RecordDeletion, Database::"Job Resource Price", 'Project', 'Job', 'Master', 999);
         ClassifyTable(RecordDeletion, Database::"Job Item Price", 'Project', 'Job', 'Master', 999);
@@ -36,13 +39,39 @@ codeunit 50521 "Projects Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Job Planning Line - Calendar", 'Project', 'Planning', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Job Usage Link", 'Project', 'Job', 'Document', 300);
 
-        // Job Buffers
+        // Job Buffers & Archive
         ClassifyTable(RecordDeletion, Database::"Job Buffer", 'Project', 'Job', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Job WIP Buffer", 'Project', 'WIP', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Job Difference Buffer", 'Project', 'Job', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Job Entry No.", 'Project', 'Job', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Job Archive", 'Project', 'Job', 'Archive', 200);
         ClassifyTable(RecordDeletion, Database::"Job Task Archive", 'Project', 'Archive', 'History', 200);
         ClassifyTable(RecordDeletion, Database::"Job Planning Line Archive", 'Project', 'Archive', 'History', 200);
+    end;
+
+    local procedure ClassifyPlanning(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Job Planning Line", 'Project', 'Planning', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Job Planning Line Invoice", 'Project', 'Planning', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Job Task", 'Project', 'Planning', 'Master', 999);
+    end;
+
+    local procedure ClassifyWIP(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Job WIP Entry", 'Project', 'WIP', 'Ledger', 100);
+        ClassifyTable(RecordDeletion, Database::"Job WIP G/L Entry", 'Project', 'WIP', 'Ledger', 100);
+        ClassifyTable(RecordDeletion, Database::"Job WIP Total", 'Project', 'WIP', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Job WIP Method", 'Project', 'WIP', 'Setup', 999);
+    end;
+    #endregion
+
+    #region Resource Management
+    local procedure ClassifyResource(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::Resource, 'Project', 'Resource', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Resource Group", 'Project', 'Resource', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Res. Capacity Entry", 'Project', 'Resource', 'Ledger', 100);
+        ClassifyTable(RecordDeletion, Database::"Res. Ledger Entry", 'Project', 'Resource', 'Ledger', 100);
     end;
 
     local procedure ClassifyResourceTables(var RecordDeletion: Record "Record Deletion")
@@ -64,40 +93,10 @@ codeunit 50521 "Projects Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Job Posting Buffer", 'Project', 'Setup', 'Document', 300);
     end;
 
-    local procedure ClassifyLedger(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyResourcePricing(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, Database::"Job Ledger Entry", 'Project', 'Ledger', 'Ledger', 100);
-        ClassifyTable(RecordDeletion, Database::"Job Register", 'Project', 'Ledger', 'Register', 150);
-    end;
-
-    local procedure ClassifyJournal(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Job Journal Line", 'Project', 'Journal', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Job Journal Batch", 'Project', 'Journal', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Job Journal Template", 'Project', 'Journal', 'Setup', 999);
-    end;
-
-    local procedure ClassifyPlanning(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Job Planning Line", 'Project', 'Planning', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Job Planning Line Invoice", 'Project', 'Planning', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Job Task", 'Project', 'Planning', 'Master', 999);
-    end;
-
-    local procedure ClassifyWIP(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Job WIP Entry", 'Project', 'WIP', 'Ledger', 100);
-        ClassifyTable(RecordDeletion, Database::"Job WIP G/L Entry", 'Project', 'WIP', 'Ledger', 100);
-        ClassifyTable(RecordDeletion, Database::"Job WIP Total", 'Project', 'WIP', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Job WIP Method", 'Project', 'WIP', 'Setup', 999);
-    end;
-
-    local procedure ClassifyResource(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::Resource, 'Project', 'Resource', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Resource Group", 'Project', 'Resource', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Res. Capacity Entry", 'Project', 'Resource', 'Ledger', 100);
-        ClassifyTable(RecordDeletion, Database::"Res. Ledger Entry", 'Project', 'Resource', 'Ledger', 100);
+        ClassifyTable(RecordDeletion, Database::"Resource Price", 'Project', 'Resource', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Resource Cost", 'Project', 'Resource', 'Master', 999);
     end;
 
     local procedure ClassifyTimesheet(var RecordDeletion: Record "Record Deletion")
@@ -114,8 +113,24 @@ codeunit 50521 "Projects Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Time Sheet Cmt. Line Archive", 'Project', 'Timesheet', 'Archive', 100);
         ClassifyTable(RecordDeletion, Database::"Time Sheet Chart Setup", 'Project', 'Timesheet', 'Setup', 999);
     end;
+    #endregion
 
+    #region Financial Tracking
+    local procedure ClassifyLedger(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Job Ledger Entry", 'Project', 'Ledger', 'Ledger', 100);
+        ClassifyTable(RecordDeletion, Database::"Job Register", 'Project', 'Ledger', 'Register', 150);
+    end;
 
+    local procedure ClassifyJournal(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Job Journal Line", 'Project', 'Journal', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Job Journal Batch", 'Project', 'Journal', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Job Journal Template", 'Project', 'Journal', 'Setup', 999);
+    end;
+    #endregion
+
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin
@@ -157,4 +172,5 @@ codeunit 50521 "Projects Classification Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }

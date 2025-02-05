@@ -1,24 +1,23 @@
 codeunit 50522 "CashFlow Classification Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
+        // Master & Setup
         ClassifyAccount(RecordDeletion);
-        ClassifyForecast(RecordDeletion);
         ClassifySetup(RecordDeletion);
+
+        // Operational
+        ClassifyForecast(RecordDeletion);
         ClassifyWorksheet(RecordDeletion);
     end;
+    #endregion
 
+    #region Master & Setup
     local procedure ClassifyAccount(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Cash Flow Account", 'CashFlow', 'Account', 'Master', 999);
         ClassifyTable(RecordDeletion, Database::"Cash Flow Account Comment", 'CashFlow', 'Account', 'Document', 300);
-    end;
-
-    local procedure ClassifyForecast(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Cash Flow Forecast", 'CashFlow', 'Forecast', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Cash Flow Forecast Entry", 'CashFlow', 'Forecast', 'Ledger', 100);
-        ClassifyTable(RecordDeletion, Database::"Cash Flow Availability Buffer", 'CashFlow', 'Forecast', 'Document', 300);
     end;
 
     local procedure ClassifySetup(var RecordDeletion: Record "Record Deletion")
@@ -27,13 +26,23 @@ codeunit 50522 "CashFlow Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Cash Flow Manual Revenue", 'CashFlow', 'Setup', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Cash Flow Setup", 'CashFlow', 'Setup', 'Setup', 999);
     end;
+    #endregion
+
+    #region Operational
+    local procedure ClassifyForecast(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Cash Flow Forecast", 'CashFlow', 'Forecast', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Cash Flow Forecast Entry", 'CashFlow', 'Forecast', 'Ledger', 100);
+        ClassifyTable(RecordDeletion, Database::"Cash Flow Availability Buffer", 'CashFlow', 'Forecast', 'Document', 300);
+    end;
 
     local procedure ClassifyWorksheet(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Cash Flow Worksheet Line", 'CashFlow', 'Worksheet', 'Document', 300);
     end;
+    #endregion
 
-
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin
@@ -71,4 +80,5 @@ codeunit 50522 "CashFlow Classification Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }

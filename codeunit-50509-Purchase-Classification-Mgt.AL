@@ -1,43 +1,62 @@
 codeunit 50509 "Purchase Classification Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
+        // Master Data & Setup
         ClassifyVendor(RecordDeletion);
+        ClassifySetup(RecordDeletion);
+
+        // Document Management
         ClassifyDocuments(RecordDeletion);
         ClassifyJournals(RecordDeletion);
         ClassifyArchive(RecordDeletion);
         ClassifyHistory(RecordDeletion);
+
+        // Financial Operations
         ClassifyPricing(RecordDeletion);
         ClassifyPayables(RecordDeletion);
         ClassifyPrepayment(RecordDeletion);
         ClassifyRemittance(RecordDeletion);
-        ClassifySetup(RecordDeletion);
+
+        // Analytics & Planning
         ClassifyStatistics(RecordDeletion);
         ClassifyPurchasePlanning(RecordDeletion);
+
+        // Integration
         ClassifyPurchaseEntityTables(RecordDeletion);
     end;
+    #endregion
 
-    local procedure ClassifyPurchaseEntityTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Purchase Order Entity Buffer", 'Purchase', 'API', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Purch. Inv. Entity Aggregate", 'Purchase', 'API', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Purch. Inv. Line Aggregate", 'Purchase', 'API', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Purch. Cr. Memo Entity Buffer", 'Purchase', 'API', 'Document', 300);
-    end;
-
+    #region Master Data & Setup
     local procedure ClassifyVendor(var RecordDeletion: Record "Record Deletion")
     begin
+        // Core Vendor Data
         ClassifyTable(RecordDeletion, Database::Vendor, 'Purchase', 'Vendor', 'Master', 999);
         ClassifyTable(RecordDeletion, Database::"Vendor Bank Account", 'Purchase', 'Vendor', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Order Address", 'Purchase', 'Vendor', 'Master', 999);
+
+        // Vendor Setup
         ClassifyTable(RecordDeletion, Database::"Vendor Posting Group", 'Purchase', 'Vendor', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Alt. Vendor Posting Group", 'Purchase', 'Vendor', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Order Address", 'Purchase', 'Vendor', 'Master', 999);
         ClassifyTable(RecordDeletion, Database::"My Vendor", 'Purchase', 'Vendor', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Vendor Templ.", 'Purchase', 'Vendor', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Vendor Purchase Buffer", 'Purchase', 'Vendor', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Purchasing", 'Purchase', 'Vendor', 'Setup', 999);
+
+        // Vendor Buffers
+        ClassifyTable(RecordDeletion, Database::"Vendor Purchase Buffer", 'Purchase', 'Vendor', 'Document', 300);
     end;
 
+    local procedure ClassifySetup(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Purchases & Payables Setup", 'Purchase', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Purchase Price Access", 'Purchase', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Vendor Amount", 'Purchase', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Vendor Invoice Disc.", 'Purchase', 'Setup', 'Setup', 999);
+    end;
+    #endregion
+
+    #region Document Management
     local procedure ClassifyDocuments(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Purchase Header", 'Purchase', 'Document', 'Document', 300);
@@ -63,26 +82,6 @@ codeunit 50509 "Purchase Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Posted Gen. Journal Line", 'Purchase', 'Journal', 'History', 200);
     end;
 
-    local procedure ClassifyPrepayment(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Purchase Prepayment %", 'Purchase', 'Prepayment', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Prepayment Inv. Line Buffer", 'Purchase', 'Prepayment', 'Document', 300);
-    end;
-
-    local procedure ClassifySetup(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Purchases & Payables Setup", 'Purchase', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Purchase Price Access", 'Purchase', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Vendor Amount", 'Purchase', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Vendor Invoice Disc.", 'Purchase', 'Setup', 'Setup', 999);
-    end;
-
-    local procedure ClassifyStatistics(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Purchase Cue", 'Purchase', 'Statistics', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Vendor Ledger Entry Buffer", 'Purchase', 'Statistics', 'Document', 300);
-    end;
-
     local procedure ClassifyArchive(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Purchase Header Archive", 'Purchase', 'History', 'History', 200);
@@ -99,7 +98,9 @@ codeunit 50509 "Purchase Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Purch. Cr. Memo Hdr.", 'Purchase', 'History', 'History', 200);
         ClassifyTable(RecordDeletion, Database::"Purch. Cr. Memo Line", 'Purchase', 'History', 'History', 200);
     end;
+    #endregion
 
+    #region Financial Operations
     local procedure ClassifyPricing(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Purchase Price Access", 'Purchase', 'Pricing', 'Setup', 999);
@@ -115,10 +116,24 @@ codeunit 50509 "Purchase Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Vendor Payment Buffer", 'Purchase', 'Payables', 'Document', 300);
     end;
 
+    local procedure ClassifyPrepayment(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Purchase Prepayment %", 'Purchase', 'Prepayment', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Prepayment Inv. Line Buffer", 'Purchase', 'Prepayment', 'Document', 300);
+    end;
+
     local procedure ClassifyRemittance(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Remit Address", 'Purchase', 'Remittance', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Remit Address Buffer", 'Purchase', 'Remittance', 'Document', 300);
+    end;
+    #endregion
+
+    #region Analytics & Planning
+    local procedure ClassifyStatistics(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Purchase Cue", 'Purchase', 'Statistics', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Vendor Ledger Entry Buffer", 'Purchase', 'Statistics', 'Document', 300);
     end;
 
     local procedure ClassifyPurchasePlanning(var RecordDeletion: Record "Record Deletion")
@@ -126,7 +141,19 @@ codeunit 50509 "Purchase Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Req. Wksh. Template", 'Purchase', 'Planning', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Requisition Wksh. Name", 'Purchase', 'Planning', 'Setup', 999);
     end;
+    #endregion
 
+    #region Integration
+    local procedure ClassifyPurchaseEntityTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Purchase Order Entity Buffer", 'Purchase', 'API', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Purch. Inv. Entity Aggregate", 'Purchase', 'API', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Purch. Inv. Line Aggregate", 'Purchase', 'API', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Purch. Cr. Memo Entity Buffer", 'Purchase', 'API', 'Document', 300);
+    end;
+    #endregion
+
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";
@@ -171,4 +198,5 @@ codeunit 50509 "Purchase Classification Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }

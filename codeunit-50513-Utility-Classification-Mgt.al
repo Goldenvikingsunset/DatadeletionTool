@@ -1,70 +1,116 @@
 codeunit 50513 "Utility Classification Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
+        // Core System Features
         ClassifyActivityLog(RecordDeletion);
         ClassifyAuditTrail(RecordDeletion);
         ClassifyDocuments(RecordDeletion);
         ClassifyPreferences(RecordDeletion);
+
+        // Banking & Finance Utilities
         ClassifyAMCBankingTables(RecordDeletion);
-        ClassifyAuditFileTables(RecordDeletion);
         ClassifyBankRecAITables(RecordDeletion);
-        ClassifyCompanyHubTables(RecordDeletion);
-        ClassifyContosoCoffeeTables(RecordDeletion);
-        ClassifyGPHistoricalTables(RecordDeletion);
-        ClassifyGPMigrationTables(RecordDeletion);
-        ClassifySearchAPI(RecordDeletion);
-        ClassifyDataArchiveTables(RecordDeletion);
-        ClassifyDataSearchTables(RecordDeletion);
-        ClassifyExcelReportsTables(RecordDeletion);
+        ClassifyPayPalTables(RecordDeletion);
+        ClassifyWorldPayTables(RecordDeletion);
+        ClassifyBankImportTables(RecordDeletion);
+
+        // Integration & APIs
         ClassifyEDocumentConnectorTables(RecordDeletion);
         ClassifyEDocumentCoreTables(RecordDeletion);
         ClassifyEDocExternalEndpointTables(RecordDeletion);
+        ClassifySearchAPI(RecordDeletion);
+        ClassifyPowerBITables(RecordDeletion);
+
+        // Company & Migration
+        ClassifyCompanyHubTables(RecordDeletion);
+        ClassifyGPMigrationTables(RecordDeletion);
+        ClassifyGPHistoricalTables(RecordDeletion);
+        ClassifyQuickbooksMigrationTables(RecordDeletion);
+        ClassifyIntelligentCloudTables(RecordDeletion);
+
+        // Reporting & Analysis
+        ClassifyAuditFileTables(RecordDeletion);
+        ClassifyDataArchiveTables(RecordDeletion);
+        ClassifyDataSearchTables(RecordDeletion);
+        ClassifyExcelReportsTables(RecordDeletion);
+
+        // Tax & Compliance
+        ClassifyMTDTables(RecordDeletion);
+        ClassifyIntrastatTables(RecordDeletion);
+        ClassifyVATGroupTables(RecordDeletion);
+
+        // AI & Analytics
+        ClassifyLatePaymentPredictionTables(RecordDeletion);
+        ClassifySalesAITables(RecordDeletion);
+        ClassifySalesForecastTables(RecordDeletion);
+
+        // Additional Features
         ClassifyDigitalVouchersTables(RecordDeletion);
         ClassifyEmailSMTPTables(RecordDeletion);
         ClassifyBusinessHeadlineTables(RecordDeletion);
         ClassifyGetAddressPostcodeTables(RecordDeletion);
-        ClassifyIntelligentCloudTables(RecordDeletion);
-        ClassifyIntrastatTables(RecordDeletion);
-        ClassifyLatePaymentPredictionTables(RecordDeletion);
-        ClassifyMTDTables(RecordDeletion);
-        ClassifyQuickbooksMigrationTables(RecordDeletion);
-        ClassifyPayPalTables(RecordDeletion);
-        ClassifyPaymentPracticeTables(RecordDeletion);
-        ClassifyPowerBITables(RecordDeletion);
         ClassifyRecommendedAppsTables(RecordDeletion);
         ClassifyGLReviewTables(RecordDeletion);
-        ClassifySalesForecastTables(RecordDeletion);
-        ClassifySalesAITables(RecordDeletion);
-        ClassifyEmailPrinterTables(RecordDeletion);
+        ClassifyPaymentPracticeTables(RecordDeletion);
         ClassifyShopifyTables(RecordDeletion);
-        ClassifyBankImportTables(RecordDeletion);
         ClassifyStatisticalAccountTables(RecordDeletion);
         ClassifySubscriptionBillingTables(RecordDeletion);
         ClassifySustainabilityTables(RecordDeletion);
         ClassifyFATroubleshootTables(RecordDeletion);
         ClassifyUniversalPrintTables(RecordDeletion);
-        ClassifyVATGroupTables(RecordDeletion);
-        ClassifyWorldPayTables(RecordDeletion);
+        ClassifyContosoCoffeeTables(RecordDeletion);
+    end;
+    #endregion
+
+    #region Core System Features
+    local procedure ClassifyActivityLog(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Activity Log", 'System', 'ActivityLog', 'History', 100);
     end;
 
-    local procedure ClassifyFATroubleshootTables(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyAuditTrail(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, 6090, 'System', 'FATroubleshoot', 'Document', 300); // FA Ledg. Entry w. Issue
+        ClassifyTable(RecordDeletion, Database::"Cancelled Document", 'System', 'Audit', 'History', 100);
+        ClassifyTable(RecordDeletion, Database::"Change Log Entry", 'System', 'Audit', 'History', 100);
     end;
 
-    local procedure ClassifyUniversalPrintTables(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyDocuments(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, 2751, 'System', 'UniversalPrint', 'Setup', 999); // Universal Printer Settings
-        ClassifyTable(RecordDeletion, 2752, 'System', 'UniversalPrint', 'Document', 300); // Universal Print Share Buffer
+        ClassifyTable(RecordDeletion, Database::"Certificate of Supply", 'System', 'Document', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Document Entry", 'System', 'Document', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Standard Text", 'System', 'Document', 'Setup', 999);
     end;
 
-    local procedure ClassifyVATGroupTables(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyPreferences(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, 4700, 'System', 'VATGroup', 'Setup', 999); // VAT Group Approved Member
-        ClassifyTable(RecordDeletion, 4701, 'System', 'VATGroup', 'Document', 300); // VAT Group Calculation
-        ClassifyTable(RecordDeletion, 4702, 'System', 'VATGroup', 'Document', 300); // VAT Group Submission Header
-        ClassifyTable(RecordDeletion, 4703, 'System', 'VATGroup', 'Document', 300); // VAT Group Submission Line
+        ClassifyTable(RecordDeletion, Database::"Journal User Preferences", 'System', 'Preferences', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Line Number Buffer", 'System', 'Preferences', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Name/Value Buffer", 'System', 'Preferences', 'Document', 300);
+    end;
+    #endregion
+
+    #region Banking & Finance Utilities
+    local procedure ClassifyAMCBankingTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 20100, 'System', 'AMCBanking', 'Setup', 999); // AMC Bank Banks
+        ClassifyTable(RecordDeletion, 20101, 'System', 'AMCBanking', 'Setup', 999); // AMC Banking Setup
+        ClassifyTable(RecordDeletion, 20102, 'System', 'AMCBanking', 'Setup', 999); // AMC Bank Pmt. Type
+    end;
+
+    local procedure ClassifyBankRecAITables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 7250, 'System', 'BankRecAI', 'Document', 300); // Bank Acc. Rec. AI Proposal
+        ClassifyTable(RecordDeletion, 7251, 'System', 'BankRecAI', 'Document', 300); // Bank Acc. Rec. AI Prop. Buf.
+        ClassifyTable(RecordDeletion, 7252, 'System', 'BankRecAI', 'Document', 300); // Trans. to G/L Acc. Jnl. Batch
+    end;
+
+    local procedure ClassifyPayPalTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 1070, 'System', 'PayPal', 'Setup', 999); // MS - PayPal Standard Account
+        ClassifyTable(RecordDeletion, 1071, 'System', 'PayPal', 'Setup', 999); // MS - PayPal Standard Template
+        ClassifyTable(RecordDeletion, 1077, 'System', 'PayPal', 'Document', 300); // MS - PayPal Transaction
     end;
 
     local procedure ClassifyWorldPayTables(var RecordDeletion: Record "Record Deletion")
@@ -78,342 +124,9 @@ codeunit 50513 "Utility Classification Mgt."
     begin
         ClassifyTable(RecordDeletion, 8850, 'System', 'BankImport', 'Document', 300); // Bank Statement Import Preview
     end;
+    #endregion
 
-    local procedure ClassifyStatisticalAccountTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 2620, 'System', 'StatAccounts', 'Document', 300); // Stat. Acc. Balance Buffer
-        ClassifyTable(RecordDeletion, 2630, 'System', 'StatAccounts', 'Setup', 999); // Statistical Acc. Journal Batch  
-        ClassifyTable(RecordDeletion, 2631, 'System', 'StatAccounts', 'Document', 300); // Statistical Acc. Journal Line
-        ClassifyTable(RecordDeletion, 2632, 'System', 'StatAccounts', 'Master', 999); // Statistical Account
-        ClassifyTable(RecordDeletion, 2633, 'System', 'StatAccounts', 'Ledger', 100); // Statistical Ledger Entry
-    end;
-
-    local procedure ClassifySubscriptionBillingTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        // Setup Tables
-        ClassifyTable(RecordDeletion, 8051, 'System', 'Subscription', 'Setup', 999); // Service Contract Setup
-        ClassifyTable(RecordDeletion, 8054, 'System', 'Subscription', 'Setup', 999); // Service Commitment Template
-        ClassifyTable(RecordDeletion, 8053, 'System', 'Subscription', 'Setup', 999); // Contract Type
-        ClassifyTable(RecordDeletion, 8055, 'System', 'Subscription', 'Setup', 999); // Service Commitment Package
-        ClassifyTable(RecordDeletion, 8056, 'System', 'Subscription', 'Setup', 999); // Service Comm. Package Line
-        ClassifyTable(RecordDeletion, 8060, 'System', 'Subscription', 'Setup', 999); // Billing Template
-
-        // Master Data
-        ClassifyTable(RecordDeletion, 8057, 'System', 'Subscription', 'Master', 999); // Service Object
-        ClassifyTable(RecordDeletion, 8058, 'System', 'Subscription', 'Setup', 999); // Item Serv. Commitment Package
-        ClassifyTable(RecordDeletion, 8005, 'System', 'Subscription', 'Setup', 999); // Item Templ. Serv. Comm. Pack.
-
-        // Contract Documents
-        ClassifyTable(RecordDeletion, 8052, 'System', 'Subscription', 'Document', 300); // Customer Contract
-        ClassifyTable(RecordDeletion, 8062, 'System', 'Subscription', 'Document', 300); // Customer Contract Line
-        ClassifyTable(RecordDeletion, 8063, 'System', 'Subscription', 'Document', 300); // Vendor Contract
-        ClassifyTable(RecordDeletion, 8065, 'System', 'Subscription', 'Document', 300); // Vendor Contract Line
-        ClassifyTable(RecordDeletion, 8066, 'System', 'Subscription', 'Document', 300); // Customer Contract Deferral
-        ClassifyTable(RecordDeletion, 8072, 'System', 'Subscription', 'Document', 300); // Vendor Contract Deferral
-
-        // Service Commitments
-        ClassifyTable(RecordDeletion, 8059, 'System', 'Subscription', 'Document', 300); // Service Commitment
-        ClassifyTable(RecordDeletion, 8068, 'System', 'Subscription', 'Document', 300); // Sales Service Commitment
-        ClassifyTable(RecordDeletion, 8069, 'System', 'Subscription', 'History', 200); // Sales Service Comm. Archive
-        ClassifyTable(RecordDeletion, 8073, 'System', 'Subscription', 'History', 200); // Service Commitment Archive
-
-        // Billing
-        ClassifyTable(RecordDeletion, 8061, 'System', 'Subscription', 'Document', 300); // Billing Line
-        ClassifyTable(RecordDeletion, 8064, 'System', 'Subscription', 'History', 200); // Billing Line Archive
-
-        // Usage Data
-        ClassifyTable(RecordDeletion, 8006, 'System', 'Subscription', 'Document', 300); // Usage Data Billing
-        ClassifyTable(RecordDeletion, 8011, 'System', 'Subscription', 'Document', 300); // Usage Data Blob
-        ClassifyTable(RecordDeletion, 8012, 'System', 'Subscription', 'Document', 300); // Usage Data Customer
-        ClassifyTable(RecordDeletion, 8013, 'System', 'Subscription', 'Document', 300); // Usage Data Import
-        ClassifyTable(RecordDeletion, 8014, 'System', 'Subscription', 'Document', 300); // Usage Data Supplier
-        ClassifyTable(RecordDeletion, 8015, 'System', 'Subscription', 'Document', 300); // Usage Data Supplier Reference
-        ClassifyTable(RecordDeletion, 8016, 'System', 'Subscription', 'Document', 300); // Usage Data Subscription
-
-        // Miscellaneous
-        ClassifyTable(RecordDeletion, 8000, 'System', 'Subscription', 'Setup', 999); // Field Translation
-        ClassifyTable(RecordDeletion, 8001, 'System', 'Subscription', 'Document', 300); // Contract Renewal Line
-        ClassifyTable(RecordDeletion, 8002, 'System', 'Subscription', 'Document', 300); // Planned Service Commitment
-        ClassifyTable(RecordDeletion, 8003, 'System', 'Subscription', 'Setup', 999); // Price Update Template
-        ClassifyTable(RecordDeletion, 8004, 'System', 'Subscription', 'Document', 300); // Contract Price Update Line
-        ClassifyTable(RecordDeletion, 8007, 'System', 'Subscription', 'Document', 300); // Overdue Service Commitments
-        ClassifyTable(RecordDeletion, 8017, 'System', 'Subscription', 'Setup', 999); // Generic Import Settings
-        ClassifyTable(RecordDeletion, 8018, 'System', 'Subscription', 'Document', 300); // Usage Data Generic Import
-        ClassifyTable(RecordDeletion, 8019, 'System', 'Subscription', 'Document', 300); // Contract Analysis Entry
-        ClassifyTable(RecordDeletion, 8020, 'System', 'Subscription', 'Document', 300); // Sales Service Commitment Buff.
-        ClassifyTable(RecordDeletion, 8070, 'System', 'Subscription', 'Document', 300); // Subscription Billing Cue
-    end;
-
-    local procedure ClassifySustainabilityTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        // Master/Setup
-        ClassifyTable(RecordDeletion, 6210, 'System', 'Sustainability', 'Master', 999); // Sustainability Account
-        ClassifyTable(RecordDeletion, 6211, 'System', 'Sustainability', 'Setup', 999); // Sustain. Account Category
-        ClassifyTable(RecordDeletion, 6212, 'System', 'Sustainability', 'Setup', 999); // Sustain. Account Subcategory
-        ClassifyTable(RecordDeletion, 6217, 'System', 'Sustainability', 'Setup', 999); // Sustainability Setup
-        ClassifyTable(RecordDeletion, 6223, 'System', 'Sustainability', 'Setup', 999); // Sust. Certificate Standard
-        ClassifyTable(RecordDeletion, 6224, 'System', 'Sustainability', 'Setup', 999); // Sust. Certificate Area
-
-        // Journal
-        ClassifyTable(RecordDeletion, 6213, 'System', 'Sustainability', 'Setup', 999); // Sustainability Jnl. Batch
-        ClassifyTable(RecordDeletion, 6214, 'System', 'Sustainability', 'Document', 300); // Sustainability Jnl. Line
-        ClassifyTable(RecordDeletion, 6215, 'System', 'Sustainability', 'Setup', 999); // Sustainability Jnl. Template
-
-        // Ledger/Analysis
-        ClassifyTable(RecordDeletion, 6216, 'System', 'Sustainability', 'Ledger', 100); // Sustainability Ledger Entry
-        ClassifyTable(RecordDeletion, 6225, 'System', 'Sustainability', 'Document', 300); // Sust. Account (Analysis View)
-
-        // Goals/Scorecards
-        ClassifyTable(RecordDeletion, 6218, 'System', 'Sustainability', 'Document', 300); // Sustainability Scorecard
-        ClassifyTable(RecordDeletion, 6219, 'System', 'Sustainability', 'Document', 300); // Sustainability Goal
-        ClassifyTable(RecordDeletion, 6220, 'System', 'Sustainability', 'Document', 300); // Sustainability Cue
-        ClassifyTable(RecordDeletion, 6221, 'System', 'Sustainability', 'Document', 300); // Sustainability Goal Cue
-
-        // Certificates
-        ClassifyTable(RecordDeletion, 6222, 'System', 'Sustainability', 'Document', 300); // Sustainability Certificate
-        ClassifyTable(RecordDeletion, 6226, 'System', 'Sustainability', 'Document', 300); // Emission Fee
-    end;
-
-    local procedure ClassifyEmailPrinterTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 2650, 'System', 'EmailPrinter', 'Setup', 999); // Email Printer Settings
-    end;
-
-    local procedure ClassifyShopifyTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        // Core Setup Tables
-        ClassifyTable(RecordDeletion, 30102, 'System', 'Shopify', 'Setup', 999); // Shpfy Shop 
-        ClassifyTable(RecordDeletion, 30103, 'System', 'Shopify', 'Setup', 999); // Shpfy Synchronization Info
-        ClassifyTable(RecordDeletion, 30150, 'System', 'Shopify', 'Setup', 999); // Shpfy Company
-        ClassifyTable(RecordDeletion, 30151, 'System', 'Shopify', 'Setup', 999); // Shpfy Company Location
-        ClassifyTable(RecordDeletion, 30156, 'System', 'Shopify', 'Setup', 999); // Shpfy Language
-        ClassifyTable(RecordDeletion, 30157, 'System', 'Shopify', 'Setup', 999); // Shpfy Translation
-        ClassifyTable(RecordDeletion, 30158, 'System', 'Shopify', 'Setup', 999); // Shpfy Payment Terms
-
-        // Master Data
-        ClassifyTable(RecordDeletion, 30105, 'System', 'Shopify', 'Master', 999); // Shpfy Customer
-        ClassifyTable(RecordDeletion, 30106, 'System', 'Shopify', 'Master', 999); // Shpfy Customer Address
-        ClassifyTable(RecordDeletion, 30107, 'System', 'Shopify', 'Setup', 999); // Shpfy Customer Template
-        ClassifyTable(RecordDeletion, 30108, 'System', 'Shopify', 'Setup', 999); // Shpfy Province
-        ClassifyTable(RecordDeletion, 30109, 'System', 'Shopify', 'Setup', 999); // Shpfy Tax Area
-        ClassifyTable(RecordDeletion, 30126, 'System', 'Shopify', 'Master', 999); // Shpfy Inventory Item
-        ClassifyTable(RecordDeletion, 30127, 'System', 'Shopify', 'Master', 999); // Shpfy Product
-        ClassifyTable(RecordDeletion, 30129, 'System', 'Shopify', 'Master', 999); // Shpfy Variant
-
-        // Order Processing
-        ClassifyTable(RecordDeletion, 30118, 'System', 'Shopify', 'Document', 300); // Shpfy Order Header
-        ClassifyTable(RecordDeletion, 30119, 'System', 'Shopify', 'Document', 300); // Shpfy Order Line
-        ClassifyTable(RecordDeletion, 30116, 'System', 'Shopify', 'Document', 300); // Shpfy Order Attribute
-        ClassifyTable(RecordDeletion, 30117, 'System', 'Shopify', 'Document', 300); // Shpfy Order Disc.Appl.
-        ClassifyTable(RecordDeletion, 30121, 'System', 'Shopify', 'Document', 300); // Shpfy Orders to Import
-        ClassifyTable(RecordDeletion, 30122, 'System', 'Shopify', 'Document', 300); // Shpfy Order Tax Line
-        ClassifyTable(RecordDeletion, 30123, 'System', 'Shopify', 'Document', 300); // Shpfy Order Risk
-        ClassifyTable(RecordDeletion, 30130, 'System', 'Shopify', 'Document', 300); // Shpfy Order Shipping Charges
-        ClassifyTable(RecordDeletion, 30149, 'System', 'Shopify', 'Document', 300); // Shpfy Order Line Attribute
-
-        // Fulfillment & Returns
-        ClassifyTable(RecordDeletion, 30111, 'System', 'Shopify', 'Document', 300); // Shpfy Order Fulfillment
-        ClassifyTable(RecordDeletion, 30139, 'System', 'Shopify', 'Document', 300); // Shpfy Fulfillment Line
-        ClassifyTable(RecordDeletion, 30143, 'System', 'Shopify', 'Document', 300); // Shpfy FulFillment Order Header
-        ClassifyTable(RecordDeletion, 30144, 'System', 'Shopify', 'Document', 300); // Shpfy FulFillment Order Line
-        ClassifyTable(RecordDeletion, 30141, 'System', 'Shopify', 'Document', 300); // Shpfy Return Line
-        ClassifyTable(RecordDeletion, 30147, 'System', 'Shopify', 'Document', 300); // Shpfy Return Header
-
-        // Payment & Finance
-        ClassifyTable(RecordDeletion, 30110, 'System', 'Shopify', 'Document', 300); // Shpfy Gift Card
-        ClassifyTable(RecordDeletion, 30124, 'System', 'Shopify', 'Document', 300); // Shpfy Payment Transaction
-        ClassifyTable(RecordDeletion, 30125, 'System', 'Shopify', 'Document', 300); // Shpfy Payout
-        ClassifyTable(RecordDeletion, 30133, 'System', 'Shopify', 'Document', 300); // Shpfy Order Transaction
-        ClassifyTable(RecordDeletion, 30154, 'System', 'Shopify', 'Document', 300); // Shpfy Suggest Payment
-        ClassifyTable(RecordDeletion, 30155, 'System', 'Shopify', 'Document', 300); // Shpfy Dispute
-        ClassifyTable(RecordDeletion, 30161, 'System', 'Shopify', 'Document', 300); // Shpfy Invoice Header
-
-        // Mapping & Integration
-        ClassifyTable(RecordDeletion, 30131, 'System', 'Shopify', 'Setup', 999); // Shpfy Shipment Method Mapping
-        ClassifyTable(RecordDeletion, 30134, 'System', 'Shopify', 'Setup', 999); // Shpfy Payment Method Mapping
-        ClassifyTable(RecordDeletion, 30136, 'System', 'Shopify', 'Setup', 999); // Shpfy Registered Store
-        ClassifyTable(RecordDeletion, 30138, 'System', 'Shopify', 'Setup', 999); // Shpfy Registered Store New
-        ClassifyTable(RecordDeletion, 30146, 'System', 'Shopify', 'Document', 300); // Shpfy Doc. Link To Doc.
-
-        // Miscellaneous
-        ClassifyTable(RecordDeletion, 30100, 'System', 'Shopify', 'Document', 300); // Shpfy Cue
-        ClassifyTable(RecordDeletion, 30101, 'System', 'Shopify', 'Document', 300); // Shpfy Metafield
-        ClassifyTable(RecordDeletion, 30104, 'System', 'Shopify', 'Setup', 999); // Shpfy Tag
-        ClassifyTable(RecordDeletion, 30112, 'System', 'Shopify', 'Document', 300); // Shpfy Shop Inventory
-        ClassifyTable(RecordDeletion, 30113, 'System', 'Shopify', 'Setup', 999); // Shpfy Shop Location
-        ClassifyTable(RecordDeletion, 30114, 'System', 'Shopify', 'Document', 300); // Shpfy Data Capture
-        ClassifyTable(RecordDeletion, 30115, 'System', 'Shopify', 'History', 200); // Shpfy Log Entry
-        ClassifyTable(RecordDeletion, 30137, 'System', 'Shopify', 'Document', 300); // Shpfy Initial Import Line
-        ClassifyTable(RecordDeletion, 30140, 'System', 'Shopify', 'Document', 300); // Shpfy Templates Warnings
-        ClassifyTable(RecordDeletion, 30148, 'System', 'Shopify', 'Document', 300); // Shpfy Bulk Operation
-    end;
-
-    local procedure ClassifyPayPalTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 1070, 'System', 'PayPal', 'Setup', 999); // MS - PayPal Standard Account
-        ClassifyTable(RecordDeletion, 1071, 'System', 'PayPal', 'Setup', 999); // MS - PayPal Standard Template
-        ClassifyTable(RecordDeletion, 1077, 'System', 'PayPal', 'Document', 300); // MS - PayPal Transaction
-    end;
-
-    local procedure ClassifyPaymentPracticeTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 685, 'System', 'PaymentPractice', 'Setup', 999); // Payment Period
-        ClassifyTable(RecordDeletion, 686, 'System', 'PaymentPractice', 'Document', 300); // Payment Practice Data
-        ClassifyTable(RecordDeletion, 687, 'System', 'PaymentPractice', 'Document', 300); // Payment Practice Header
-        ClassifyTable(RecordDeletion, 688, 'System', 'PaymentPractice', 'Document', 300); // Payment Practice Line
-    end;
-
-    local procedure ClassifyPowerBITables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 36950, 'System', 'PowerBI', 'Document', 300); // Dimension Set Entry
-        ClassifyTable(RecordDeletion, 36951, 'System', 'PowerBI', 'Setup', 999); // PowerBI Reports Setup
-        ClassifyTable(RecordDeletion, 36952, 'System', 'PowerBI', 'Setup', 999); // Working Day
-        ClassifyTable(RecordDeletion, 36953, 'System', 'PowerBI', 'Setup', 999); // Account Category
-    end;
-
-    local procedure ClassifyRecommendedAppsTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 4750, 'System', 'RecommendedApps', 'Document', 300); // Recommended Apps
-    end;
-
-    local procedure ClassifyGLReviewTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 22216, 'System', 'GLReview', 'Document', 300); // G/L Entry Review Entry
-        ClassifyTable(RecordDeletion, 22217, 'System', 'GLReview', 'Setup', 999); // G/L Entry Review Setup
-    end;
-
-    local procedure ClassifySalesForecastTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 1850, 'System', 'SalesForecast', 'Document', 300); // MS - Sales Forecast
-        ClassifyTable(RecordDeletion, 1851, 'System', 'SalesForecast', 'Setup', 999); // MS - Sales Forecast Parameter
-        ClassifyTable(RecordDeletion, 1853, 'System', 'SalesForecast', 'Setup', 999); // MS - Sales Forecast Setup
-    end;
-
-    local procedure ClassifySalesAITables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 7275, 'System', 'SalesAI', 'Document', 300); // Sales Line AI Suggestions
-        ClassifyTable(RecordDeletion, 7276, 'System', 'SalesAI', 'Document', 300); // Search API Response
-        ClassifyTable(RecordDeletion, 7277, 'System', 'SalesAI', 'Setup', 999); // Attachment Mapping
-        ClassifyTable(RecordDeletion, 7278, 'System', 'SalesAI', 'Document', 300); // Mapping Cache
-    end;
-
-    local procedure ClassifyIntrastatTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 4810, 'System', 'Intrastat', 'Setup', 999); // Intrastat Report Setup
-        ClassifyTable(RecordDeletion, 4811, 'System', 'Intrastat', 'Document', 300); // Intrastat Report Header
-        ClassifyTable(RecordDeletion, 4812, 'System', 'Intrastat', 'Document', 300); // Intrastat Report Line
-        ClassifyTable(RecordDeletion, 4813, 'System', 'Intrastat', 'Document', 300); // Intrastat Report Checklist
-    end;
-
-    local procedure ClassifyLatePaymentPredictionTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 1950, 'System', 'LatePayment', 'Setup', 999); // LP Machine Learning Setup
-        ClassifyTable(RecordDeletion, 1951, 'System', 'LatePayment', 'Document', 300); // LP ML Input Data
-    end;
-
-    local procedure ClassifyMTDTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 10530, 'System', 'MTD', 'Document', 300); // MTD Liability
-        ClassifyTable(RecordDeletion, 10531, 'System', 'MTD', 'Document', 300); // MTD Payment
-        ClassifyTable(RecordDeletion, 10532, 'System', 'MTD', 'Document', 300); // MTD Return Details
-        ClassifyTable(RecordDeletion, 10539, 'System', 'MTD', 'Document', 300); // MTD Missing Fraud Prev. Hdr
-        ClassifyTable(RecordDeletion, 10540, 'System', 'MTD', 'Setup', 999); // MTD Default Fraud Prev. Hdr
-        ClassifyTable(RecordDeletion, 10541, 'System', 'MTD', 'Document', 300); // MTD Session Fraud Prev. Hdr
-    end;
-
-    local procedure ClassifyQuickbooksMigrationTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        // Master Data
-        ClassifyTable(RecordDeletion, 1911, 'System', 'QBMigration', 'Document', 300); // MigrationQB Account
-        ClassifyTable(RecordDeletion, 1912, 'System', 'QBMigration', 'Document', 300); // MigrationQB Customer
-        ClassifyTable(RecordDeletion, 1914, 'System', 'QBMigration', 'Document', 300); // MigrationQB Vendor
-        ClassifyTable(RecordDeletion, 1916, 'System', 'QBMigration', 'Document', 300); // MigrationQB Item
-
-        // Transaction Data
-        ClassifyTable(RecordDeletion, 1913, 'System', 'QBMigration', 'Document', 300); // MigrationQB CustomerTrans
-        ClassifyTable(RecordDeletion, 1915, 'System', 'QBMigration', 'Document', 300); // MigrationQB VendorTrans
-
-        // Setup
-        ClassifyTable(RecordDeletion, 1917, 'System', 'QBMigration', 'Setup', 999); // MigrationQB Config
-        ClassifyTable(RecordDeletion, 1918, 'System', 'QBMigration', 'Setup', 999); // MigrationQB Account Setup
-    end;
-
-    local procedure ClassifyDigitalVouchersTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 5579, 'System', 'DigitalVouchers', 'Setup', 999); // Digital Voucher Entry Setup
-        ClassifyTable(RecordDeletion, 5580, 'System', 'DigitalVouchers', 'Setup', 999); // Voucher Entry Source Code
-        ClassifyTable(RecordDeletion, 5581, 'System', 'DigitalVouchers', 'Setup', 999); // Digital Voucher Setup
-    end;
-
-    local procedure ClassifyEmailSMTPTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 4511, 'System', 'EmailSMTP', 'Setup', 999); // SMTP Account
-    end;
-
-    local procedure ClassifyBusinessHeadlineTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 1436, 'System', 'Headlines', 'Document', 300); // Ess. Business Headline Per Usr
-        ClassifyTable(RecordDeletion, 1437, 'System', 'Headlines', 'Document', 300); // Headline Details Per User
-        ClassifyTable(RecordDeletion, 1438, 'System', 'Headlines', 'Setup', 999); // Essential Business Headline
-        ClassifyTable(RecordDeletion, 1439, 'System', 'Headlines', 'Document', 300); // Headline Details
-    end;
-
-    local procedure ClassifyGetAddressPostcodeTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 9092, 'System', 'GetAddress', 'Setup', 999); // Postcode GetAddress.io Config
-    end;
-
-    local procedure ClassifyIntelligentCloudTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        // Core Setup Tables
-        ClassifyTable(RecordDeletion, 4000, 'System', 'IntCloud', 'Setup', 999); // Hybrid Product Type
-        ClassifyTable(RecordDeletion, 4003, 'System', 'IntCloud', 'Setup', 999); // Intelligent Cloud Setup
-        ClassifyTable(RecordDeletion, 4005, 'System', 'IntCloud', 'Setup', 999); // Hybrid Company
-        ClassifyTable(RecordDeletion, 40025, 'System', 'IntCloud', 'Setup', 999); // Cloud Migration ADL Setup
-
-        // Replication Tables
-        ClassifyTable(RecordDeletion, 4001, 'System', 'IntCloud', 'Document', 300); // Hybrid Replication Summary
-        ClassifyTable(RecordDeletion, 4002, 'System', 'IntCloud', 'Document', 300); // Hybrid Replication Detail
-        ClassifyTable(RecordDeletion, 40026, 'System', 'IntCloud', 'Document', 300); // Replication Run Completed Arg
-        ClassifyTable(RecordDeletion, 40027, 'System', 'IntCloud', 'Document', 300); // Hybrid Company Status
-
-        // Mapping Tables
-        ClassifyTable(RecordDeletion, 4007, 'System', 'IntCloud', 'Setup', 999); // User Mapping Source
-        ClassifyTable(RecordDeletion, 4009, 'System', 'IntCloud', 'Setup', 999); // Migration Table Mapping
-        ClassifyTable(RecordDeletion, 4022, 'System', 'IntCloud', 'Document', 300); // User Mapping Work
-
-        // Status and Logging Tables
-        ClassifyTable(RecordDeletion, 4008, 'System', 'IntCloud', 'Document', 300); // Post Migration Checklist
-        ClassifyTable(RecordDeletion, 4010, 'System', 'IntCloud', 'Document', 300); // Intelligent Cloud Table Status
-        ClassifyTable(RecordDeletion, 4019, 'System', 'IntCloud', 'Document', 300); // Intelligent Cloud Not Migrated
-        ClassifyTable(RecordDeletion, 40028, 'System', 'IntCloud', 'Document', 300); // Hybrid DA Approval
-        ClassifyTable(RecordDeletion, 40032, 'System', 'IntCloud', 'Document', 300); // Hybrid Table Status
-        ClassifyTable(RecordDeletion, 40041, 'System', 'IntCloud', 'History', 200); // Cloud Migration Override Log
-    end;
-
-    local procedure ClassifyDataArchiveTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 600, 'System', 'DataArchive', 'Setup', 999); // Data Archive
-        ClassifyTable(RecordDeletion, 601, 'System', 'DataArchive', 'Document', 300); // Data Archive Table
-        ClassifyTable(RecordDeletion, 602, 'System', 'DataArchive', 'Document', 300); // Data Archive Media Field
-    end;
-
-    local procedure ClassifyDataSearchTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 2680, 'System', 'DataSearch', 'Document', 300); // Data Search Result
-        ClassifyTable(RecordDeletion, 2681, 'System', 'DataSearch', 'Setup', 999); // Data Search Setup (Table)
-        ClassifyTable(RecordDeletion, 2682, 'System', 'DataSearch', 'Setup', 999); // Data Search Setup (Field)
-        ClassifyTable(RecordDeletion, 2683, 'System', 'DataSearch', 'Document', 300); // Data Search Source Temp
-    end;
-
-    local procedure ClassifyExcelReportsTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, 4401, 'System', 'ExcelReports', 'Document', 300); // EXR Aging Report Buffer
-        ClassifyTable(RecordDeletion, 4402, 'System', 'ExcelReports', 'Document', 300); // EXR Trial Balance Buffer
-        ClassifyTable(RecordDeletion, 4404, 'System', 'ExcelReports', 'Document', 300); // EXR Top Vendor Report Buffer
-        ClassifyTable(RecordDeletion, 4405, 'System', 'ExcelReports', 'Document', 300); // EXR Top Customer Report Buffer
-    end;
-
+    #region Integration & APIs
     local procedure ClassifyEDocumentConnectorTables(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, 6371, 'System', 'EDocConnector', 'Setup', 999); // Mandate
@@ -442,6 +155,31 @@ codeunit 50513 "Utility Classification Mgt."
     local procedure ClassifyEDocExternalEndpointTables(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, 6361, 'System', 'EDocEndpoints', 'Setup', 999); // E-Doc. Ext. Connection Setup
+    end;
+
+    local procedure ClassifySearchAPI(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 7339, 'System', 'Search', 'Document', 300); // Search API Response
+    end;
+
+    local procedure ClassifyPowerBITables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 36950, 'System', 'PowerBI', 'Document', 300); // Dimension Set Entry
+        ClassifyTable(RecordDeletion, 36951, 'System', 'PowerBI', 'Setup', 999); // PowerBI Reports Setup
+        ClassifyTable(RecordDeletion, 36952, 'System', 'PowerBI', 'Setup', 999); // Working Day
+        ClassifyTable(RecordDeletion, 36953, 'System', 'PowerBI', 'Setup', 999); // Account Category
+    end;
+    #endregion
+
+    #region Company & Migration
+    local procedure ClassifyCompanyHubTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 1151, 'System', 'CompanyHub', 'Document', 300); // COHUB Company KPI
+        ClassifyTable(RecordDeletion, 1152, 'System', 'CompanyHub', 'Setup', 999); // COHUB Environment
+        ClassifyTable(RecordDeletion, 1153, 'System', 'CompanyHub', 'Setup', 999); // COHUB Company Endpoint
+        ClassifyTable(RecordDeletion, 1154, 'System', 'CompanyHub', 'Document', 300); // COHUB User Task
+        ClassifyTable(RecordDeletion, 1155, 'System', 'CompanyHub', 'Setup', 999); // COHUB Group
+        ClassifyTable(RecordDeletion, 1156, 'System', 'CompanyHub', 'Document', 300); // COHUB Group Company Summary
     end;
 
     local procedure ClassifyGPMigrationTables(var RecordDeletion: Record "Record Deletion")
@@ -584,19 +322,53 @@ codeunit 50513 "Utility Classification Mgt."
         ClassifyTable(RecordDeletion, 40916, 'System', 'GPHistorical', 'History', 200); // Hist. Recv. Trx. SerialLot
     end;
 
-    // Add a new procedure for Search API
-    local procedure ClassifySearchAPI(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyQuickbooksMigrationTables(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, 7339, 'System', 'Search', 'Document', 300); // Search API Response
+        // Master Data
+        ClassifyTable(RecordDeletion, 1911, 'System', 'QBMigration', 'Document', 300); // MigrationQB Account
+        ClassifyTable(RecordDeletion, 1912, 'System', 'QBMigration', 'Document', 300); // MigrationQB Customer
+        ClassifyTable(RecordDeletion, 1914, 'System', 'QBMigration', 'Document', 300); // MigrationQB Vendor
+        ClassifyTable(RecordDeletion, 1916, 'System', 'QBMigration', 'Document', 300); // MigrationQB Item
+
+        // Transaction Data
+        ClassifyTable(RecordDeletion, 1913, 'System', 'QBMigration', 'Document', 300); // MigrationQB CustomerTrans
+        ClassifyTable(RecordDeletion, 1915, 'System', 'QBMigration', 'Document', 300); // MigrationQB VendorTrans
+
+        // Setup
+        ClassifyTable(RecordDeletion, 1917, 'System', 'QBMigration', 'Setup', 999); // MigrationQB Config
+        ClassifyTable(RecordDeletion, 1918, 'System', 'QBMigration', 'Setup', 999); // MigrationQB Account Setup
     end;
 
-    local procedure ClassifyAMCBankingTables(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyIntelligentCloudTables(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, 20100, 'System', 'AMCBanking', 'Setup', 999); // AMC Bank Banks
-        ClassifyTable(RecordDeletion, 20101, 'System', 'AMCBanking', 'Setup', 999); // AMC Banking Setup
-        ClassifyTable(RecordDeletion, 20102, 'System', 'AMCBanking', 'Setup', 999); // AMC Bank Pmt. Type
-    end;
+        // Core Setup Tables
+        ClassifyTable(RecordDeletion, 4000, 'System', 'IntCloud', 'Setup', 999); // Hybrid Product Type
+        ClassifyTable(RecordDeletion, 4003, 'System', 'IntCloud', 'Setup', 999); // Intelligent Cloud Setup
+        ClassifyTable(RecordDeletion, 4005, 'System', 'IntCloud', 'Setup', 999); // Hybrid Company
+        ClassifyTable(RecordDeletion, 40025, 'System', 'IntCloud', 'Setup', 999); // Cloud Migration ADL Setup
 
+        // Replication Tables
+        ClassifyTable(RecordDeletion, 4001, 'System', 'IntCloud', 'Document', 300); // Hybrid Replication Summary
+        ClassifyTable(RecordDeletion, 4002, 'System', 'IntCloud', 'Document', 300); // Hybrid Replication Detail
+        ClassifyTable(RecordDeletion, 40026, 'System', 'IntCloud', 'Document', 300); // Replication Run Completed Arg
+        ClassifyTable(RecordDeletion, 40027, 'System', 'IntCloud', 'Document', 300); // Hybrid Company Status
+
+        // Mapping Tables
+        ClassifyTable(RecordDeletion, 4007, 'System', 'IntCloud', 'Setup', 999); // User Mapping Source
+        ClassifyTable(RecordDeletion, 4009, 'System', 'IntCloud', 'Setup', 999); // Migration Table Mapping
+        ClassifyTable(RecordDeletion, 4022, 'System', 'IntCloud', 'Document', 300); // User Mapping Work
+
+        // Status and Logging Tables
+        ClassifyTable(RecordDeletion, 4008, 'System', 'IntCloud', 'Document', 300); // Post Migration Checklist
+        ClassifyTable(RecordDeletion, 4010, 'System', 'IntCloud', 'Document', 300); // Intelligent Cloud Table Status
+        ClassifyTable(RecordDeletion, 4019, 'System', 'IntCloud', 'Document', 300); // Intelligent Cloud Not Migrated
+        ClassifyTable(RecordDeletion, 40028, 'System', 'IntCloud', 'Document', 300); // Hybrid DA Approval
+        ClassifyTable(RecordDeletion, 40032, 'System', 'IntCloud', 'Document', 300); // Hybrid Table Status
+        ClassifyTable(RecordDeletion, 40041, 'System', 'IntCloud', 'History', 200); // Cloud Migration Override Log
+    end;
+    #endregion
+
+    #region Reporting & Analysis
     local procedure ClassifyAuditFileTables(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, 5260, 'System', 'AuditFile', 'Master', 999); // G/L Account Mapping Header
@@ -611,21 +383,299 @@ codeunit 50513 "Utility Classification Mgt."
         ClassifyTable(RecordDeletion, 5269, 'System', 'AuditFile', 'Setup', 999); // Audit Export Data Type Setup
     end;
 
-    local procedure ClassifyBankRecAITables(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyDataArchiveTables(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, 7250, 'System', 'BankRecAI', 'Document', 300); // Bank Acc. Rec. AI Proposal
-        ClassifyTable(RecordDeletion, 7251, 'System', 'BankRecAI', 'Document', 300); // Bank Acc. Rec. AI Prop. Buf.
-        ClassifyTable(RecordDeletion, 7252, 'System', 'BankRecAI', 'Document', 300); // Trans. to G/L Acc. Jnl. Batch
+        ClassifyTable(RecordDeletion, 600, 'System', 'DataArchive', 'Setup', 999); // Data Archive
+        ClassifyTable(RecordDeletion, 601, 'System', 'DataArchive', 'Document', 300); // Data Archive Table
+        ClassifyTable(RecordDeletion, 602, 'System', 'DataArchive', 'Document', 300); // Data Archive Media Field
     end;
 
-    local procedure ClassifyCompanyHubTables(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyDataSearchTables(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, 1151, 'System', 'CompanyHub', 'Document', 300); // COHUB Company KPI
-        ClassifyTable(RecordDeletion, 1152, 'System', 'CompanyHub', 'Setup', 999); // COHUB Environment
-        ClassifyTable(RecordDeletion, 1153, 'System', 'CompanyHub', 'Setup', 999); // COHUB Company Endpoint
-        ClassifyTable(RecordDeletion, 1154, 'System', 'CompanyHub', 'Document', 300); // COHUB User Task
-        ClassifyTable(RecordDeletion, 1155, 'System', 'CompanyHub', 'Setup', 999); // COHUB Group
-        ClassifyTable(RecordDeletion, 1156, 'System', 'CompanyHub', 'Document', 300); // COHUB Group Company Summary
+        ClassifyTable(RecordDeletion, 2680, 'System', 'DataSearch', 'Document', 300); // Data Search Result
+        ClassifyTable(RecordDeletion, 2681, 'System', 'DataSearch', 'Setup', 999); // Data Search Setup (Table)
+        ClassifyTable(RecordDeletion, 2682, 'System', 'DataSearch', 'Setup', 999); // Data Search Setup (Field)
+        ClassifyTable(RecordDeletion, 2683, 'System', 'DataSearch', 'Document', 300); // Data Search Source Temp
+    end;
+
+    local procedure ClassifyExcelReportsTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 4401, 'System', 'ExcelReports', 'Document', 300); // EXR Aging Report Buffer
+        ClassifyTable(RecordDeletion, 4402, 'System', 'ExcelReports', 'Document', 300); // EXR Trial Balance Buffer
+        ClassifyTable(RecordDeletion, 4404, 'System', 'ExcelReports', 'Document', 300); // EXR Top Vendor Report Buffer
+        ClassifyTable(RecordDeletion, 4405, 'System', 'ExcelReports', 'Document', 300); // EXR Top Customer Report Buffer
+    end;
+    #endregion
+
+    #region Tax & Compliance
+    local procedure ClassifyMTDTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 10530, 'System', 'MTD', 'Document', 300); // MTD Liability
+        ClassifyTable(RecordDeletion, 10531, 'System', 'MTD', 'Document', 300); // MTD Payment
+        ClassifyTable(RecordDeletion, 10532, 'System', 'MTD', 'Document', 300); // MTD Return Details
+        ClassifyTable(RecordDeletion, 10539, 'System', 'MTD', 'Document', 300); // MTD Missing Fraud Prev. Hdr
+        ClassifyTable(RecordDeletion, 10540, 'System', 'MTD', 'Setup', 999); // MTD Default Fraud Prev. Hdr
+        ClassifyTable(RecordDeletion, 10541, 'System', 'MTD', 'Document', 300); // MTD Session Fraud Prev. Hdr
+    end;
+
+    local procedure ClassifyIntrastatTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 4810, 'System', 'Intrastat', 'Setup', 999); // Intrastat Report Setup
+        ClassifyTable(RecordDeletion, 4811, 'System', 'Intrastat', 'Document', 300); // Intrastat Report Header
+        ClassifyTable(RecordDeletion, 4812, 'System', 'Intrastat', 'Document', 300); // Intrastat Report Line
+        ClassifyTable(RecordDeletion, 4813, 'System', 'Intrastat', 'Document', 300); // Intrastat Report Checklist
+    end;
+
+    local procedure ClassifyVATGroupTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 4700, 'System', 'VATGroup', 'Setup', 999); // VAT Group Approved Member
+        ClassifyTable(RecordDeletion, 4701, 'System', 'VATGroup', 'Document', 300); // VAT Group Calculation
+        ClassifyTable(RecordDeletion, 4702, 'System', 'VATGroup', 'Document', 300); // VAT Group Submission Header
+        ClassifyTable(RecordDeletion, 4703, 'System', 'VATGroup', 'Document', 300); // VAT Group Submission Line
+    end;
+    #endregion
+
+    #region AI & Analytics
+    local procedure ClassifyLatePaymentPredictionTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 1950, 'System', 'LatePayment', 'Setup', 999); // LP Machine Learning Setup
+        ClassifyTable(RecordDeletion, 1951, 'System', 'LatePayment', 'Document', 300); // LP ML Input Data
+    end;
+
+    local procedure ClassifySalesAITables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 7275, 'System', 'SalesAI', 'Document', 300); // Sales Line AI Suggestions
+        ClassifyTable(RecordDeletion, 7276, 'System', 'SalesAI', 'Document', 300); // Search API Response
+        ClassifyTable(RecordDeletion, 7277, 'System', 'SalesAI', 'Setup', 999); // Attachment Mapping
+        ClassifyTable(RecordDeletion, 7278, 'System', 'SalesAI', 'Document', 300); // Mapping Cache
+    end;
+
+    local procedure ClassifySalesForecastTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 1850, 'System', 'SalesForecast', 'Document', 300); // MS - Sales Forecast
+        ClassifyTable(RecordDeletion, 1851, 'System', 'SalesForecast', 'Setup', 999); // MS - Sales Forecast Parameter
+        ClassifyTable(RecordDeletion, 1853, 'System', 'SalesForecast', 'Setup', 999); // MS - Sales Forecast Setup
+    end;
+    #endregion
+
+    #region Additional Features
+    local procedure ClassifyDigitalVouchersTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 5579, 'System', 'DigitalVouchers', 'Setup', 999); // Digital Voucher Entry Setup
+        ClassifyTable(RecordDeletion, 5580, 'System', 'DigitalVouchers', 'Setup', 999); // Voucher Entry Source Code
+        ClassifyTable(RecordDeletion, 5581, 'System', 'DigitalVouchers', 'Setup', 999); // Digital Voucher Setup
+    end;
+
+    local procedure ClassifyEmailSMTPTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 4511, 'System', 'EmailSMTP', 'Setup', 999); // SMTP Account
+    end;
+
+    local procedure ClassifyBusinessHeadlineTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 1436, 'System', 'Headlines', 'Document', 300); // Ess. Business Headline Per Usr
+        ClassifyTable(RecordDeletion, 1437, 'System', 'Headlines', 'Document', 300); // Headline Details Per User
+        ClassifyTable(RecordDeletion, 1438, 'System', 'Headlines', 'Setup', 999); // Essential Business Headline
+        ClassifyTable(RecordDeletion, 1439, 'System', 'Headlines', 'Document', 300); // Headline Details
+    end;
+
+    local procedure ClassifyGetAddressPostcodeTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 9092, 'System', 'GetAddress', 'Setup', 999); // Postcode GetAddress.io Config
+    end;
+
+    local procedure ClassifyRecommendedAppsTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 4750, 'System', 'RecommendedApps', 'Document', 300); // Recommended Apps
+    end;
+
+    local procedure ClassifyGLReviewTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 22216, 'System', 'GLReview', 'Document', 300); // G/L Entry Review Entry
+        ClassifyTable(RecordDeletion, 22217, 'System', 'GLReview', 'Setup', 999); // G/L Entry Review Setup
+    end;
+
+    local procedure ClassifyPaymentPracticeTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 685, 'System', 'PaymentPractice', 'Setup', 999); // Payment Period
+        ClassifyTable(RecordDeletion, 686, 'System', 'PaymentPractice', 'Document', 300); // Payment Practice Data
+        ClassifyTable(RecordDeletion, 687, 'System', 'PaymentPractice', 'Document', 300); // Payment Practice Header
+        ClassifyTable(RecordDeletion, 688, 'System', 'PaymentPractice', 'Document', 300); // Payment Practice Line
+    end;
+
+    local procedure ClassifyShopifyTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        // Core Setup Tables
+        ClassifyTable(RecordDeletion, 30102, 'System', 'Shopify', 'Setup', 999); // Shpfy Shop 
+        ClassifyTable(RecordDeletion, 30103, 'System', 'Shopify', 'Setup', 999); // Shpfy Synchronization Info
+        ClassifyTable(RecordDeletion, 30150, 'System', 'Shopify', 'Setup', 999); // Shpfy Company
+        ClassifyTable(RecordDeletion, 30151, 'System', 'Shopify', 'Setup', 999); // Shpfy Company Location
+        ClassifyTable(RecordDeletion, 30156, 'System', 'Shopify', 'Setup', 999); // Shpfy Language
+        ClassifyTable(RecordDeletion, 30157, 'System', 'Shopify', 'Setup', 999); // Shpfy Translation
+        ClassifyTable(RecordDeletion, 30158, 'System', 'Shopify', 'Setup', 999); // Shpfy Payment Terms
+
+        // Master Data
+        ClassifyTable(RecordDeletion, 30105, 'System', 'Shopify', 'Master', 999); // Shpfy Customer
+        ClassifyTable(RecordDeletion, 30106, 'System', 'Shopify', 'Master', 999); // Shpfy Customer Address
+        ClassifyTable(RecordDeletion, 30107, 'System', 'Shopify', 'Setup', 999); // Shpfy Customer Template
+        ClassifyTable(RecordDeletion, 30108, 'System', 'Shopify', 'Setup', 999); // Shpfy Province
+        ClassifyTable(RecordDeletion, 30109, 'System', 'Shopify', 'Setup', 999); // Shpfy Tax Area
+        ClassifyTable(RecordDeletion, 30126, 'System', 'Shopify', 'Master', 999); // Shpfy Inventory Item
+        ClassifyTable(RecordDeletion, 30127, 'System', 'Shopify', 'Master', 999); // Shpfy Product
+        ClassifyTable(RecordDeletion, 30129, 'System', 'Shopify', 'Master', 999); // Shpfy Variant
+
+        // Order Processing
+        ClassifyTable(RecordDeletion, 30118, 'System', 'Shopify', 'Document', 300); // Shpfy Order Header
+        ClassifyTable(RecordDeletion, 30119, 'System', 'Shopify', 'Document', 300); // Shpfy Order Line
+        ClassifyTable(RecordDeletion, 30116, 'System', 'Shopify', 'Document', 300); // Shpfy Order Attribute
+        ClassifyTable(RecordDeletion, 30117, 'System', 'Shopify', 'Document', 300); // Shpfy Order Disc.Appl.
+        ClassifyTable(RecordDeletion, 30121, 'System', 'Shopify', 'Document', 300); // Shpfy Orders to Import
+        ClassifyTable(RecordDeletion, 30122, 'System', 'Shopify', 'Document', 300); // Shpfy Order Tax Line
+        ClassifyTable(RecordDeletion, 30123, 'System', 'Shopify', 'Document', 300); // Shpfy Order Risk
+        ClassifyTable(RecordDeletion, 30130, 'System', 'Shopify', 'Document', 300); // Shpfy Order Shipping Charges
+        ClassifyTable(RecordDeletion, 30149, 'System', 'Shopify', 'Document', 300); // Shpfy Order Line Attribute
+
+        // Fulfillment & Returns
+        ClassifyTable(RecordDeletion, 30111, 'System', 'Shopify', 'Document', 300); // Shpfy Order Fulfillment
+        ClassifyTable(RecordDeletion, 30139, 'System', 'Shopify', 'Document', 300); // Shpfy Fulfillment Line
+        ClassifyTable(RecordDeletion, 30143, 'System', 'Shopify', 'Document', 300); // Shpfy FulFillment Order Header
+        ClassifyTable(RecordDeletion, 30144, 'System', 'Shopify', 'Document', 300); // Shpfy FulFillment Order Line
+        ClassifyTable(RecordDeletion, 30141, 'System', 'Shopify', 'Document', 300); // Shpfy Return Line
+        ClassifyTable(RecordDeletion, 30147, 'System', 'Shopify', 'Document', 300); // Shpfy Return Header
+
+        // Payment & Finance
+        ClassifyTable(RecordDeletion, 30110, 'System', 'Shopify', 'Document', 300); // Shpfy Gift Card
+        ClassifyTable(RecordDeletion, 30124, 'System', 'Shopify', 'Document', 300); // Shpfy Payment Transaction
+        ClassifyTable(RecordDeletion, 30125, 'System', 'Shopify', 'Document', 300); // Shpfy Payout
+        ClassifyTable(RecordDeletion, 30133, 'System', 'Shopify', 'Document', 300); // Shpfy Order Transaction
+        ClassifyTable(RecordDeletion, 30154, 'System', 'Shopify', 'Document', 300); // Shpfy Suggest Payment
+        ClassifyTable(RecordDeletion, 30155, 'System', 'Shopify', 'Document', 300); // Shpfy Dispute
+        ClassifyTable(RecordDeletion, 30161, 'System', 'Shopify', 'Document', 300); // Shpfy Invoice Header
+
+        // Mapping & Integration
+        ClassifyTable(RecordDeletion, 30131, 'System', 'Shopify', 'Setup', 999); // Shpfy Shipment Method Mapping
+        ClassifyTable(RecordDeletion, 30134, 'System', 'Shopify', 'Setup', 999); // Shpfy Payment Method Mapping
+        ClassifyTable(RecordDeletion, 30136, 'System', 'Shopify', 'Setup', 999); // Shpfy Registered Store
+        ClassifyTable(RecordDeletion, 30138, 'System', 'Shopify', 'Setup', 999); // Shpfy Registered Store New
+        ClassifyTable(RecordDeletion, 30146, 'System', 'Shopify', 'Document', 300); // Shpfy Doc. Link To Doc.
+
+        // Miscellaneous
+        ClassifyTable(RecordDeletion, 30100, 'System', 'Shopify', 'Document', 300); // Shpfy Cue
+        ClassifyTable(RecordDeletion, 30101, 'System', 'Shopify', 'Document', 300); // Shpfy Metafield
+        ClassifyTable(RecordDeletion, 30104, 'System', 'Shopify', 'Setup', 999); // Shpfy Tag
+        ClassifyTable(RecordDeletion, 30112, 'System', 'Shopify', 'Document', 300); // Shpfy Shop Inventory
+        ClassifyTable(RecordDeletion, 30113, 'System', 'Shopify', 'Setup', 999); // Shpfy Shop Location
+        ClassifyTable(RecordDeletion, 30114, 'System', 'Shopify', 'Document', 300); // Shpfy Data Capture
+        ClassifyTable(RecordDeletion, 30115, 'System', 'Shopify', 'History', 200); // Shpfy Log Entry
+        ClassifyTable(RecordDeletion, 30137, 'System', 'Shopify', 'Document', 300); // Shpfy Initial Import Line
+        ClassifyTable(RecordDeletion, 30140, 'System', 'Shopify', 'Document', 300); // Shpfy Templates Warnings
+        ClassifyTable(RecordDeletion, 30148, 'System', 'Shopify', 'Document', 300); // Shpfy Bulk Operation
+    end;
+
+    local procedure ClassifyStatisticalAccountTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 2620, 'System', 'StatAccounts', 'Document', 300); // Stat. Acc. Balance Buffer
+        ClassifyTable(RecordDeletion, 2630, 'System', 'StatAccounts', 'Setup', 999); // Statistical Acc. Journal Batch  
+        ClassifyTable(RecordDeletion, 2631, 'System', 'StatAccounts', 'Document', 300); // Statistical Acc. Journal Line
+        ClassifyTable(RecordDeletion, 2632, 'System', 'StatAccounts', 'Master', 999); // Statistical Account
+        ClassifyTable(RecordDeletion, 2633, 'System', 'StatAccounts', 'Ledger', 100); // Statistical Ledger Entry
+    end;
+
+    local procedure ClassifySubscriptionBillingTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        // Setup Tables
+        ClassifyTable(RecordDeletion, 8051, 'System', 'Subscription', 'Setup', 999); // Service Contract Setup
+        ClassifyTable(RecordDeletion, 8054, 'System', 'Subscription', 'Setup', 999); // Service Commitment Template
+        ClassifyTable(RecordDeletion, 8053, 'System', 'Subscription', 'Setup', 999); // Contract Type
+        ClassifyTable(RecordDeletion, 8055, 'System', 'Subscription', 'Setup', 999); // Service Commitment Package
+        ClassifyTable(RecordDeletion, 8056, 'System', 'Subscription', 'Setup', 999); // Service Comm. Package Line
+        ClassifyTable(RecordDeletion, 8060, 'System', 'Subscription', 'Setup', 999); // Billing Template
+
+        // Master Data
+        ClassifyTable(RecordDeletion, 8057, 'System', 'Subscription', 'Master', 999); // Service Object
+        ClassifyTable(RecordDeletion, 8058, 'System', 'Subscription', 'Setup', 999); // Item Serv. Commitment Package
+        ClassifyTable(RecordDeletion, 8005, 'System', 'Subscription', 'Setup', 999); // Item Templ. Serv. Comm. Pack.
+
+        // Contract Documents
+        ClassifyTable(RecordDeletion, 8052, 'System', 'Subscription', 'Document', 300); // Customer Contract
+        ClassifyTable(RecordDeletion, 8062, 'System', 'Subscription', 'Document', 300); // Customer Contract Line
+        ClassifyTable(RecordDeletion, 8063, 'System', 'Subscription', 'Document', 300); // Vendor Contract
+        ClassifyTable(RecordDeletion, 8065, 'System', 'Subscription', 'Document', 300); // Vendor Contract Line
+        ClassifyTable(RecordDeletion, 8066, 'System', 'Subscription', 'Document', 300); // Customer Contract Deferral
+        ClassifyTable(RecordDeletion, 8072, 'System', 'Subscription', 'Document', 300); // Vendor Contract Deferral
+
+        // Service Commitments
+        ClassifyTable(RecordDeletion, 8059, 'System', 'Subscription', 'Document', 300); // Service Commitment
+        ClassifyTable(RecordDeletion, 8068, 'System', 'Subscription', 'Document', 300); // Sales Service Commitment
+        ClassifyTable(RecordDeletion, 8069, 'System', 'Subscription', 'History', 200); // Sales Service Comm. Archive
+        ClassifyTable(RecordDeletion, 8073, 'System', 'Subscription', 'History', 200); // Service Commitment Archive
+
+        // Billing
+        ClassifyTable(RecordDeletion, 8061, 'System', 'Subscription', 'Document', 300); // Billing Line
+        ClassifyTable(RecordDeletion, 8064, 'System', 'Subscription', 'History', 200); // Billing Line Archive
+
+        // Usage Data
+        ClassifyTable(RecordDeletion, 8006, 'System', 'Subscription', 'Document', 300); // Usage Data Billing
+        ClassifyTable(RecordDeletion, 8011, 'System', 'Subscription', 'Document', 300); // Usage Data Blob
+        ClassifyTable(RecordDeletion, 8012, 'System', 'Subscription', 'Document', 300); // Usage Data Customer
+        ClassifyTable(RecordDeletion, 8013, 'System', 'Subscription', 'Document', 300); // Usage Data Import
+        ClassifyTable(RecordDeletion, 8014, 'System', 'Subscription', 'Document', 300); // Usage Data Supplier
+        ClassifyTable(RecordDeletion, 8015, 'System', 'Subscription', 'Document', 300); // Usage Data Supplier Reference
+        ClassifyTable(RecordDeletion, 8016, 'System', 'Subscription', 'Document', 300); // Usage Data Subscription
+
+        // Miscellaneous
+        ClassifyTable(RecordDeletion, 8000, 'System', 'Subscription', 'Setup', 999); // Field Translation
+        ClassifyTable(RecordDeletion, 8001, 'System', 'Subscription', 'Document', 300); // Contract Renewal Line
+        ClassifyTable(RecordDeletion, 8002, 'System', 'Subscription', 'Document', 300); // Planned Service Commitment
+        ClassifyTable(RecordDeletion, 8003, 'System', 'Subscription', 'Setup', 999); // Price Update Template
+        ClassifyTable(RecordDeletion, 8004, 'System', 'Subscription', 'Document', 300); // Contract Price Update Line
+        ClassifyTable(RecordDeletion, 8007, 'System', 'Subscription', 'Document', 300); // Overdue Service Commitments
+        ClassifyTable(RecordDeletion, 8017, 'System', 'Subscription', 'Setup', 999); // Generic Import Settings
+        ClassifyTable(RecordDeletion, 8018, 'System', 'Subscription', 'Document', 300); // Usage Data Generic Import
+        ClassifyTable(RecordDeletion, 8019, 'System', 'Subscription', 'Document', 300); // Contract Analysis Entry
+        ClassifyTable(RecordDeletion, 8020, 'System', 'Subscription', 'Document', 300); // Sales Service Commitment Buff.
+        ClassifyTable(RecordDeletion, 8070, 'System', 'Subscription', 'Document', 300); // Subscription Billing Cue
+    end;
+
+    local procedure ClassifySustainabilityTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        // Master/Setup
+        ClassifyTable(RecordDeletion, 6210, 'System', 'Sustainability', 'Master', 999); // Sustainability Account
+        ClassifyTable(RecordDeletion, 6211, 'System', 'Sustainability', 'Setup', 999); // Sustain. Account Category
+        ClassifyTable(RecordDeletion, 6212, 'System', 'Sustainability', 'Setup', 999); // Sustain. Account Subcategory
+        ClassifyTable(RecordDeletion, 6217, 'System', 'Sustainability', 'Setup', 999); // Sustainability Setup
+        ClassifyTable(RecordDeletion, 6223, 'System', 'Sustainability', 'Setup', 999); // Sust. Certificate Standard
+        ClassifyTable(RecordDeletion, 6224, 'System', 'Sustainability', 'Setup', 999); // Sust. Certificate Area
+
+        // Journal
+        ClassifyTable(RecordDeletion, 6213, 'System', 'Sustainability', 'Setup', 999); // Sustainability Jnl. Batch
+        ClassifyTable(RecordDeletion, 6214, 'System', 'Sustainability', 'Document', 300); // Sustainability Jnl. Line
+        ClassifyTable(RecordDeletion, 6215, 'System', 'Sustainability', 'Setup', 999); // Sustainability Jnl. Template
+
+        // Ledger/Analysis
+        ClassifyTable(RecordDeletion, 6216, 'System', 'Sustainability', 'Ledger', 100); // Sustainability Ledger Entry
+        ClassifyTable(RecordDeletion, 6225, 'System', 'Sustainability', 'Document', 300); // Sust. Account (Analysis View)
+
+        // Goals/Scorecards
+        ClassifyTable(RecordDeletion, 6218, 'System', 'Sustainability', 'Document', 300); // Sustainability Scorecard
+        ClassifyTable(RecordDeletion, 6219, 'System', 'Sustainability', 'Document', 300); // Sustainability Goal
+        ClassifyTable(RecordDeletion, 6220, 'System', 'Sustainability', 'Document', 300); // Sustainability Cue
+        ClassifyTable(RecordDeletion, 6221, 'System', 'Sustainability', 'Document', 300); // Sustainability Goal Cue
+
+        // Certificates
+        ClassifyTable(RecordDeletion, 6222, 'System', 'Sustainability', 'Document', 300); // Sustainability Certificate
+        ClassifyTable(RecordDeletion, 6226, 'System', 'Sustainability', 'Document', 300); // Emission Fee
+    end;
+
+    local procedure ClassifyFATroubleshootTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 6090, 'System', 'FATroubleshoot', 'Document', 300); // FA Ledg. Entry w. Issue
+    end;
+
+    local procedure ClassifyUniversalPrintTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, 2751, 'System', 'UniversalPrint', 'Setup', 999); // Universal Printer Settings
+        ClassifyTable(RecordDeletion, 2752, 'System', 'UniversalPrint', 'Document', 300); // Universal Print Share Buffer
     end;
 
     local procedure ClassifyContosoCoffeeTables(var RecordDeletion: Record "Record Deletion")
@@ -646,32 +696,9 @@ codeunit 50513 "Utility Classification Mgt."
         ClassifyTable(RecordDeletion, 5161, 'System', 'ContosoCoffee', 'Setup', 999);
         ClassifyTable(RecordDeletion, 5169, 'System', 'ContosoCoffee', 'Setup', 999);
     end;
+    #endregion
 
-    local procedure ClassifyActivityLog(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Activity Log", 'System', 'ActivityLog', 'History', 100);
-    end;
-
-    local procedure ClassifyAuditTrail(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Cancelled Document", 'System', 'Audit', 'History', 100);
-        ClassifyTable(RecordDeletion, Database::"Change Log Entry", 'System', 'Audit', 'History', 100);
-    end;
-
-    local procedure ClassifyDocuments(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Certificate of Supply", 'System', 'Document', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Document Entry", 'System', 'Document', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Standard Text", 'System', 'Document', 'Setup', 999);
-    end;
-
-    local procedure ClassifyPreferences(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Journal User Preferences", 'System', 'Preferences', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Line Number Buffer", 'System', 'Preferences', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Name/Value Buffer", 'System', 'Preferences', 'Document', 300);
-    end;
-
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionModule: Enum "Record Deletion Module";
@@ -712,4 +739,5 @@ codeunit 50513 "Utility Classification Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }

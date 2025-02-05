@@ -1,48 +1,43 @@
 codeunit 50504 "Foundation Classification Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
+        // Core Setup Classifications
+        ClassifySystemSetup(RecordDeletion);
+        ClassifyCompanyTables(RecordDeletion);
+        ClassifyFinancialSetup(RecordDeletion);
+        ClassifyManufacturingSetup(RecordDeletion);
+
+        // Master Data Classifications
         ClassifyAddressTables(RecordDeletion);
+        ClassifyUOMTables(RecordDeletion);
+        ClassifyShippingTables(RecordDeletion);
+        ClassifyNoSeriesTables(RecordDeletion);
+
+        // Document & Processing Classifications
         ClassifyAttachmentTables(RecordDeletion);
+        ClassifyCommentTables(RecordDeletion);
+        ClassifyExtendedTextTables(RecordDeletion);
+        ClassifyNavigateTables(RecordDeletion);
+
+        // Other Core Classifications
         ClassifyAuditCodeTables(RecordDeletion);
         ClassifyBatchProcessingTables(RecordDeletion);
         ClassifyCalendarTables(RecordDeletion);
-        ClassifyCommentTables(RecordDeletion);
-        ClassifyCompanyTables(RecordDeletion);
-        ClassifyExtendedTextTables(RecordDeletion);
-        ClassifyNavigateTables(RecordDeletion);
-        ClassifyNoSeriesTables(RecordDeletion);
         ClassifyPaymentTermsTables(RecordDeletion);
         ClassifyPeriodTables(RecordDeletion);
         ClassifyReportingTables(RecordDeletion);
-        ClassifyShippingTables(RecordDeletion);
-        ClassifyUOMTables(RecordDeletion);
-        ClassifyManufacturingSetup(RecordDeletion);
-        ClassifyFinancialSetup(RecordDeletion);
+
+        // Additional Classifications
         ClassifyBufferTables(RecordDeletion);
-        ClassifySystemSetup(RecordDeletion);
         ClassifyLicenseRelated(RecordDeletion);
         ClassifyDisputeManagement(RecordDeletion);
         ClassifyAttachments(RecordDeletion);
     end;
+    #endregion
 
-
-    local procedure ClassifyAttachments(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Unlinked Attachment", 'Foundation', 'Attachment', 'Document', 300);
-    end;
-
-    local procedure ClassifyLicenseRelated(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"License Agreement", 'Foundation', 'License', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Signup Context Values", 'Foundation', 'License', 'Setup', 999);
-    end;
-
-    local procedure ClassifyDisputeManagement(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Dispute Status", 'Foundation', 'Dispute', 'Setup', 999);
-    end;
-
+    #region Setup Classifications
     local procedure ClassifySystemSetup(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::Language, 'Foundation', 'SystemSetup', 'Setup', 999);
@@ -51,20 +46,11 @@ codeunit 50504 "Foundation Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"User Time Register", 'Foundation', 'SystemSetup', 'Document', 300);
     end;
 
-    local procedure ClassifyBufferTables(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyCompanyTables(var RecordDeletion: Record "Record Deletion")
     begin
-        // Processing Buffers
-        ClassifyTable(RecordDeletion, Database::"Aging Band Buffer", 'Foundation', 'Buffer', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Invt. Posting Buffer", 'Foundation', 'Buffer', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Invoice Post. Buffer", 'Foundation', 'Buffer', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Invoice Posting Buffer", 'Foundation', 'Buffer', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Record Export Buffer", 'Foundation', 'Buffer', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Account Use Buffer", 'Foundation', 'Buffer', 'Document', 300);
-
-        // Merge Buffers
-        ClassifyTable(RecordDeletion, Database::"Merge Duplicates Buffer", 'Foundation', 'Buffer', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Merge Duplicates Line Buffer", 'Foundation', 'Buffer', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Merge Duplicates Conflict", 'Foundation', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Company Information", 'Foundation', 'Company', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Company Size", 'Foundation', 'Company', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Deposits Page Setup", 'Foundation', 'Setup', 'Setup', 999);
     end;
 
     local procedure ClassifyFinancialSetup(var RecordDeletion: Record "Record Deletion")
@@ -81,7 +67,9 @@ codeunit 50504 "Foundation Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"BOM Component", 'Foundation', 'Manufacturing', 'Master', 999);
         ClassifyTable(RecordDeletion, Database::"Inventory Posting Group", 'Foundation', 'Manufacturing', 'Setup', 999);
     end;
+    #endregion
 
+    #region Master Data Classifications
     local procedure ClassifyAddressTables(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Country/Region", 'Foundation', 'Address', 'Master', 999);
@@ -94,11 +82,56 @@ codeunit 50504 "Foundation Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Autocomplete Address", 'Foundation', 'Address', 'Document', 300);
     end;
 
+    local procedure ClassifyUOMTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Unit of Measure", 'Foundation', 'UOM', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Unit Group", 'Foundation', 'UOM', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Unit of Measure Translation", 'Foundation', 'UOM', 'Setup', 999);
+    end;
+
+    local procedure ClassifyShippingTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Shipment Method", 'Foundation', 'Shipping', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Shipment Method Translation", 'Foundation', 'Shipping', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Shipping Agent", 'Foundation', 'Shipping', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Shipping Agent Services", 'Foundation', 'Shipping', 'Master', 999);
+    end;
+
+    local procedure ClassifyNoSeriesTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"No. Series", 'Foundation', 'NoSeries', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"No. Series Line", 'Foundation', 'NoSeries', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"No. Series Relationship", 'Foundation', 'NoSeries', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"No. Series Tenant", 'Foundation', 'NoSeries', 'Setup', 999);
+    end;
+    #endregion
+
+    #region Document Classifications
     local procedure ClassifyAttachmentTables(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Document Attachment", 'Foundation', 'Attachment', 'Document', 300);
     end;
 
+    local procedure ClassifyCommentTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Comment Line", 'Foundation', 'Comment', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Comment Line Archive", 'Foundation', 'Comment', 'Archive', 100);
+    end;
+
+    local procedure ClassifyExtendedTextTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Extended Text Header", 'Foundation', 'ExtendedText', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Extended Text Line", 'Foundation', 'ExtendedText', 'Document', 300);
+    end;
+
+    local procedure ClassifyNavigateTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Document Entry", 'Foundation', 'Navigate', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Order Tracking Entry", 'Foundation', 'Navigate', 'Document', 300);
+    end;
+    #endregion
+
+    #region Core Classifications
     local procedure ClassifyAuditCodeTables(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Reason Code", 'Foundation', 'AuditCodes', 'Setup', 999);
@@ -122,39 +155,6 @@ codeunit 50504 "Foundation Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Customized Calendar Entry", 'Foundation', 'Calendar', 'Document', 300);
     end;
 
-    local procedure ClassifyCommentTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Comment Line", 'Foundation', 'Comment', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Comment Line Archive", 'Foundation', 'Comment', 'Archive', 100);
-    end;
-
-    local procedure ClassifyCompanyTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Company Information", 'Foundation', 'Company', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Company Size", 'Foundation', 'Company', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Deposits Page Setup", 'Foundation', 'Setup', 'Setup', 999);
-    end;
-
-    local procedure ClassifyExtendedTextTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Extended Text Header", 'Foundation', 'ExtendedText', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Extended Text Line", 'Foundation', 'ExtendedText', 'Document', 300);
-    end;
-
-    local procedure ClassifyNavigateTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Document Entry", 'Foundation', 'Navigate', 'Document', 300);
-        ClassifyTable(RecordDeletion, Database::"Order Tracking Entry", 'Foundation', 'Navigate', 'Document', 300);
-    end;
-
-    local procedure ClassifyNoSeriesTables(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"No. Series", 'Foundation', 'NoSeries', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"No. Series Line", 'Foundation', 'NoSeries', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"No. Series Relationship", 'Foundation', 'NoSeries', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"No. Series Tenant", 'Foundation', 'NoSeries', 'Setup', 999);
-    end;
-
     local procedure ClassifyPaymentTermsTables(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Payment Terms", 'Foundation', 'PaymentTerms', 'Setup', 999);
@@ -176,22 +176,43 @@ codeunit 50504 "Foundation Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Report List Translation", 'Foundation', 'Reporting', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Report Selections", 'Foundation', 'Reporting', 'Setup', 999);
     end;
+    #endregion
 
-    local procedure ClassifyShippingTables(var RecordDeletion: Record "Record Deletion")
+    #region Additional Classifications
+    local procedure ClassifyBufferTables(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, Database::"Shipment Method", 'Foundation', 'Shipping', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Shipment Method Translation", 'Foundation', 'Shipping', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Shipping Agent", 'Foundation', 'Shipping', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Shipping Agent Services", 'Foundation', 'Shipping', 'Master', 999);
+        // Processing Buffers
+        ClassifyTable(RecordDeletion, Database::"Aging Band Buffer", 'Foundation', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Invt. Posting Buffer", 'Foundation', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Invoice Post. Buffer", 'Foundation', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Invoice Posting Buffer", 'Foundation', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Record Export Buffer", 'Foundation', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Account Use Buffer", 'Foundation', 'Buffer', 'Document', 300);
+
+        // Merge Buffers
+        ClassifyTable(RecordDeletion, Database::"Merge Duplicates Buffer", 'Foundation', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Merge Duplicates Line Buffer", 'Foundation', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Merge Duplicates Conflict", 'Foundation', 'Buffer', 'Document', 300);
     end;
 
-    local procedure ClassifyUOMTables(var RecordDeletion: Record "Record Deletion")
+    local procedure ClassifyLicenseRelated(var RecordDeletion: Record "Record Deletion")
     begin
-        ClassifyTable(RecordDeletion, Database::"Unit of Measure", 'Foundation', 'UOM', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"Unit Group", 'Foundation', 'UOM', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Unit of Measure Translation", 'Foundation', 'UOM', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"License Agreement", 'Foundation', 'License', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Signup Context Values", 'Foundation', 'License', 'Setup', 999);
     end;
 
+    local procedure ClassifyDisputeManagement(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Dispute Status", 'Foundation', 'Dispute', 'Setup', 999);
+    end;
+
+    local procedure ClassifyAttachments(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Unlinked Attachment", 'Foundation', 'Attachment', 'Document', 300);
+    end;
+    #endregion
+
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     begin
         if RecordDeletion.Get(TableNo) then begin
@@ -231,4 +252,5 @@ codeunit 50504 "Foundation Classification Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }

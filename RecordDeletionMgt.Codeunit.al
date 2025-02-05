@@ -1,5 +1,6 @@
 codeunit 50500 "Record Deletion Mgt."
 {
+    #region Permissions
     Permissions =
         tabledata AllObjWithCaption = R,
         tabledata Field = R,
@@ -21,8 +22,10 @@ codeunit 50500 "Record Deletion Mgt."
         tabledata Location = R,
         tabledata "Salesperson/Purchaser" = R,
         tabledata "Customer Price Group" = R,
-        tabledata "Finance Charge Terms" = R; // Added missing permission
+        tabledata "Finance Charge Terms" = R;
+    #endregion
 
+    #region Variables
     var
         UpdateDialogMsg: Label 'Processing Table #1###############';
         DeletingRecordsTxt: Label 'Deleting Records!\Table: #1#######', Comment = '%1 = Table ID';
@@ -30,7 +33,9 @@ codeunit 50500 "Record Deletion Mgt."
         DeleteRecordsQst: Label 'Delete Records with RunTrigger = false?';
         DeleteRecordsWithTriggerQst: Label 'Delete Records with RunTrigger = true?';
         NotExistsTxt: Label '%1 => %2 = ''%3'' does not exist in the ''%4'' table', Comment = '%1 = RecRef Position, %2 = FieldRef Name, %3 = FieldRef Value, %4 = Record Ref Name';
+    #endregion
 
+    #region Public Interface
     procedure InsertUpdateTables()
     var
         RecordDeletion: Record "Record Deletion";
@@ -84,83 +89,6 @@ codeunit 50500 "Record Deletion Mgt."
 
         // Now run the classification as a separate operation
         ClassifyTablesWithProgress();
-    end;
-
-    local procedure UpdateRecordCount(var RecordDeletion: Record "Record Deletion"; AllObjWithCaption: Record AllObjWithCaption; var RecRef: RecordRef)
-    begin
-        if CanAccessTable(AllObjWithCaption."Object ID") then begin
-            RecRef.Open(AllObjWithCaption."Object ID");
-            RecordDeletion."No. of Records" := RecRef.Count;
-            RecRef.Close();
-        end else
-            RecordDeletion."No. of Records" := 0;
-
-        RecordDeletion.Modify(true);
-    end;
-
-    local procedure ClassifyTablesWithProgress()
-    var
-        RecordDeletion: Record "Record Deletion";
-        Window: Dialog;
-        TableClassificationMgt: Codeunit "Table Classification Core Mgt.";
-    begin
-        Window.Open('Classifying Tables by Module...\#1##########################');
-
-        // Clear any existing classifications first
-        Window.Update(1, 'Preparing tables...');
-        RecordDeletion.Reset();
-        RecordDeletion.ModifyAll(Module, RecordDeletion.Module::" ");
-        RecordDeletion.ModifyAll("Table Type", RecordDeletion."Table Type"::" ");
-        RecordDeletion.ModifyAll("Deletion Priority", 0);
-        Commit();
-
-        // Now classify all tables at once
-        Window.Update(1, 'Classifying tables...');
-        TableClassificationMgt.ClassifyTables(RecordDeletion);
-
-        Window.Close();
-    end;
-
-    local procedure CanAccessTable(TableId: Integer): Boolean
-    var
-        RecRef: RecordRef;
-    begin
-        if TableId in [
-            // Known protected tables from original list
-            0, 1432, 1997, 1998, 3712, 3903, 3905, 5490, 7775,
-            8700, 8701, 8703, 9004, 9005, 9008, 9011, 9017, 9019,
-            9022, 9222, 9999,
-
-            // Newly identified protected tables
-            1433,    // Net Promoter Score
-            1990 .. 1996,  // Guided Experience/Checklist Items
-            2004, 2010,  // Azure AI Usage, OpenAI Settings
-            3963 .. 3966,  // Regex and Matching tables
-            4150, 4151,  // Blob tables
-            5101, 5102,  // Contact Value, RM Matrix
-            5320 .. 5392,  // Exchange and CRM Integration tables
-            5433,        // Tenant Config Package
-            5555, 5557,  // Permission Conflicts
-            6060,        // Hybrid Deployment
-            6315,        // Power BI Filter
-            6700,        // Exchange Sync
-            6710, 6712,  // Web Service
-            7201 .. 7205,  // CDS/CRM tables
-            7230 .. 7234,  // Master Data Management
-            8887 .. 8930,  // Email tables
-            9010,        // Azure AD User Update
-            9018, 9020,  // Permission Set tables
-            9861, 9862, 9865, // Permission Buffer tables
-            9981 .. 9991,  // Word Template tables
-            9996,        // Upgrade Tag
-            130450 .. 130472    // Test tables
-            ] then
-            exit(false);
-
-        // Attempt to open the table
-        RecRef.OPEN(TableId);
-        RecRef.CLOSE;
-        exit(true);
     end;
 
     procedure DeleteRecords(RunTrigger: Boolean)
@@ -239,6 +167,97 @@ codeunit 50500 "Record Deletion Mgt."
         UpdateDialog.Close();
     end;
 
+    procedure ViewRecords(RecordDeletion: Record "Record Deletion")
+    begin
+        Hyperlink(GetUrl(ClientType::Current, CompanyName, ObjectType::Table, RecordDeletion."Table ID"));
+    end;
+
+    procedure ClearRecordsToDelete()
+    var
+        RecordDeletion: Record "Record Deletion";
+    begin
+        RecordDeletion.ModifyAll("Delete Records", false);
+    end;
+    #endregion
+
+    #region Core Functions
+    local procedure UpdateRecordCount(var RecordDeletion: Record "Record Deletion"; AllObjWithCaption: Record AllObjWithCaption; var RecRef: RecordRef)
+    begin
+        if CanAccessTable(AllObjWithCaption."Object ID") then begin
+            RecRef.Open(AllObjWithCaption."Object ID");
+            RecordDeletion."No. of Records" := RecRef.Count;
+            RecRef.Close();
+        end else
+            RecordDeletion."No. of Records" := 0;
+
+        RecordDeletion.Modify(true);
+    end;
+
+    local procedure ClassifyTablesWithProgress()
+    var
+        RecordDeletion: Record "Record Deletion";
+        Window: Dialog;
+        TableClassificationMgt: Codeunit "Table Classification Core Mgt.";
+    begin
+        Window.Open('Classifying Tables by Module...\#1##########################');
+
+        // Clear any existing classifications first
+        Window.Update(1, 'Preparing tables...');
+        RecordDeletion.Reset();
+        RecordDeletion.ModifyAll(Module, RecordDeletion.Module::" ");
+        RecordDeletion.ModifyAll("Table Type", RecordDeletion."Table Type"::" ");
+        RecordDeletion.ModifyAll("Deletion Priority", 0);
+        Commit();
+
+        // Now classify all tables at once
+        Window.Update(1, 'Classifying tables...');
+        TableClassificationMgt.ClassifyTables(RecordDeletion);
+
+        Window.Close();
+    end;
+
+    local procedure CanAccessTable(TableId: Integer): Boolean
+    var
+        RecRef: RecordRef;
+    begin
+        if TableId in [
+            // Known protected tables from original list
+            0, 1432, 1997, 1998, 3712, 3903, 3905, 5490, 7775,
+            8700, 8701, 8703, 9004, 9005, 9008, 9011, 9017, 9019,
+            9022, 9222, 9999,
+
+            // Newly identified protected tables
+            1433,    // Net Promoter Score
+            1990 .. 1996,  // Guided Experience/Checklist Items
+            2004, 2010,  // Azure AI Usage, OpenAI Settings
+            3963 .. 3966,  // Regex and Matching tables
+            4150, 4151,  // Blob tables
+            5101, 5102,  // Contact Value, RM Matrix
+            5320 .. 5392,  // Exchange and CRM Integration tables
+            5433,        // Tenant Config Package
+            5555, 5557,  // Permission Conflicts
+            6060,        // Hybrid Deployment
+            6315,        // Power BI Filter
+            6700,        // Exchange Sync
+            6710, 6712,  // Web Service
+            7201 .. 7205,  // CDS/CRM tables
+            7230 .. 7234,  // Master Data Management
+            8887 .. 8930,  // Email tables
+            9010,        // Azure AD User Update
+            9018, 9020,  // Permission Set tables
+            9861, 9862, 9865, // Permission Buffer tables
+            9981 .. 9991,  // Word Template tables
+            9996,        // Upgrade Tag
+            130450 .. 130472    // Test tables
+            ] then
+            exit(false);
+
+        // Attempt to open the table
+        RecRef.OPEN(TableId);
+        RecRef.CLOSE;
+        exit(true);
+    end;
+
     local procedure CheckTableRelationsForRecord(var RecordRef: RecordRef; var Field: Record Field; var Field2: Record Field; var KeyRec: Record "Key"; var RecordDeletionRelError: Record "Record Deletion Rel. Error"; var EntryNo: Integer)
     var
         RecordRef2: RecordRef;
@@ -293,28 +312,21 @@ codeunit 50500 "Record Deletion Mgt."
                 end;
             until Field.Next() = 0;
     end;
+    #endregion
 
-    procedure ViewRecords(RecordDeletion: Record "Record Deletion")
-    begin
-        Hyperlink(GetUrl(ClientType::Current, CompanyName, ObjectType::Table, RecordDeletion."Table ID"));
-    end;
-
-    procedure ClearRecordsToDelete()
-    var
-        RecordDeletion: Record "Record Deletion";
-    begin
-        RecordDeletion.ModifyAll("Delete Records", false);
-    end;
-
+    #region Classification
     local procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     var
         TableClassificationMgt: Codeunit "Table Classification Core Mgt.";
     begin
         TableClassificationMgt.ClassifyTables(RecordDeletion);
     end;
+    #endregion
 
+    #region Events
     [IntegrationEvent(false, false)]
     local procedure OnBeforeDeleteRecords(var RecordDeletion: Record "Record Deletion")
     begin
     end;
+    #endregion
 }

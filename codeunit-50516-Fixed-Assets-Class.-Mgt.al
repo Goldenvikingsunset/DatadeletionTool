@@ -1,14 +1,31 @@
 codeunit 50516 "Fixed Assets Class. Mgt."
 {
+    #region Public
     procedure ClassifyTables(var RecordDeletion: Record "Record Deletion")
     begin
+        // Master & Setup
         ClassifyFixedAssets(RecordDeletion);
+        ClassifyFixedAssetTables(RecordDeletion);
+
+        // Core Functionality
         ClassifyDepreciation(RecordDeletion);
         ClassifyInsurance(RecordDeletion);
         ClassifyMaintenance(RecordDeletion);
+
+        // Transactions & History
         ClassifyJournal(RecordDeletion);
         ClassifyLedger(RecordDeletion);
-        ClassifyFixedAssetTables(RecordDeletion);
+    end;
+    #endregion
+
+    #region Master & Setup
+    local procedure ClassifyFixedAssets(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Fixed Asset", 'FixedAssets', 'Master', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"FA Class", 'FixedAssets', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"FA Subclass", 'FixedAssets', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"FA Location", 'FixedAssets', 'Setup', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Main Asset Component", 'FixedAssets', 'Master', 'Master', 999);
     end;
 
     local procedure ClassifyFixedAssetTables(var RecordDeletion: Record "Record Deletion")
@@ -36,16 +53,9 @@ codeunit 50516 "Fixed Assets Class. Mgt."
         ClassifyTable(RecordDeletion, Database::"FA Posting Group Buffer", 'FixedAssets', 'Posting', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Depreciation Table Buffer", 'FixedAssets', 'Posting', 'Document', 300);
     end;
+    #endregion
 
-    local procedure ClassifyFixedAssets(var RecordDeletion: Record "Record Deletion")
-    begin
-        ClassifyTable(RecordDeletion, Database::"Fixed Asset", 'FixedAssets', 'Master', 'Master', 999);
-        ClassifyTable(RecordDeletion, Database::"FA Class", 'FixedAssets', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"FA Subclass", 'FixedAssets', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"FA Location", 'FixedAssets', 'Setup', 'Setup', 999);
-        ClassifyTable(RecordDeletion, Database::"Main Asset Component", 'FixedAssets', 'Master', 'Master', 999);
-    end;
-
+    #region Core Functionality
     local procedure ClassifyDepreciation(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Depreciation Book", 'FixedAssets', 'Depreciation', 'Setup', 999);
@@ -69,7 +79,9 @@ codeunit 50516 "Fixed Assets Class. Mgt."
         ClassifyTable(RecordDeletion, Database::"Maintenance Registration", 'FixedAssets', 'Maintenance', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Maintenance Ledger Entry", 'FixedAssets', 'Maintenance', 'Ledger', 100);
     end;
+    #endregion
 
+    #region Transactions & History
     local procedure ClassifyJournal(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"FA Journal Line", 'FixedAssets', 'Journal', 'Document', 300);
@@ -83,7 +95,9 @@ codeunit 50516 "Fixed Assets Class. Mgt."
         ClassifyTable(RecordDeletion, Database::"FA Ledger Entry", 'FixedAssets', 'Ledger', 'Ledger', 100);
         ClassifyTable(RecordDeletion, Database::"FA Register", 'FixedAssets', 'Ledger', 'Register', 150);
     end;
+    #endregion
 
+    #region Helper Functions
     local procedure ClassifyTable(var RecordDeletion: Record "Record Deletion"; TableNo: Integer; Module: Text[50]; Submodule: Text[50]; TableType: Text[50]; Priority: Integer)
     var
         RecordDeletionTableType: Enum "Record Deletion Table Type";
@@ -125,4 +139,5 @@ codeunit 50516 "Fixed Assets Class. Mgt."
             RecordDeletion.Modify();
         end;
     end;
+    #endregion
 }
