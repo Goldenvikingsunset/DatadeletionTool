@@ -146,6 +146,7 @@ codeunit 50506 "Finance Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Incoming Document Approver", 'Finance', 'Documents', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Posted Docs. With No Inc. Buf.", 'Finance', 'Documents', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Currency Amount", 'Finance', 'Amounts', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Currency", 'Finance', 'Amounts', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Customer Amount", 'Finance', 'Amounts', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Item Amount", 'Finance', 'Amounts', 'Document', 300);
     end;
@@ -245,6 +246,7 @@ codeunit 50506 "Finance Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Reminder Comment Line", 'Finance', 'Reminder', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Reminder/Fin. Charge Entry", 'Finance', 'Reminder', 'Ledger', 100);
         ClassifyTable(RecordDeletion, Database::"Finance Charge Text", 'Finance', 'Reminder', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Finance Charge Terms", 'Finance', 'Reminder', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Reminder Attachment Text", 'Finance', 'Reminder', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Reminder Email Text", 'Finance', 'Reminder', 'Setup', 999);
         ClassifyTable(RecordDeletion, Database::"Reminder Attachment Text Line", 'Finance', 'Reminder', 'Document', 300);

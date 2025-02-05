@@ -1,28 +1,66 @@
 codeunit 50500 "Record Deletion Mgt."
 {
     #region Permissions
+    // Permissions = TableData 17 = IMD, Tabledata 376 = IMD, Tabledata 37 = IMD, Tabledata 38 = IMD, Tabledata 39 = IMD, Tabledata 81 = IMD, Tabledata 21 = IMD, Tabledata 25 = IMD, Tabledata 732 = IMD, Tabledata 110 = IMD, TableData 111 = IMD, TableData 112 = IMD, TableData 113 = IMD, TableData 114 = IMD, TableData 115 = IMD, TableData 120 = IMD, Tabledata 121 = IMD, Tabledata 122 = IMD, Tabledata 123 = IMD, Tabledata 124 = IMD, Tabledata 125 = IMD, Tabledata 169 = IMD, Tabledata 379 = IMD, Tabledata 380 = IMD, Tabledata 271 = IMD, Tabledata 5802 = IMD, tabledata 6650 = IMD, tabledata 66160 = IMD;
     Permissions =
-        tabledata AllObjWithCaption = R,
-        tabledata Field = R,
-        tabledata "Key" = R,
-        tabledata "Record Deletion" = RIM,
-        tabledata "Record Deletion Rel. Error" = RID,
-        tabledata "Table Metadata" = R,
-        tabledata Currency = R,
-        tabledata Customer = R,
-        tabledata Vendor = R,
-        tabledata "G/L Account" = R,
-        tabledata "G/L Entry" = R,
-        tabledata Item = R,
-        tabledata "Payment Terms" = R,
-        tabledata "Standard Text" = R,
-        tabledata Language = R,
-        tabledata "Country/Region" = R,
-        tabledata "Shipment Method" = R,
-        tabledata Location = R,
-        tabledata "Salesperson/Purchaser" = R,
-        tabledata "Customer Price Group" = R,
-        tabledata "Finance Charge Terms" = R;
+    TableData 17 = IMD,    // G/L Entry
+    TableData 32 = IMD,    // Item Entry
+    TableData 45 = IMD,    // G/L Register
+    TableData 46 = IMD,    // Item Register                  // Added
+    TableData 86 = IMD,    // Exch. Rate Adjmt. Reg.        // Added
+    TableData 87 = IMD,    // Date Compr. Register          // Added
+    TableData 240 = IMD,   // Resource Register             // Added
+    TableData 241 = IMD,   // Job Register                  // Added
+    TableData 253 = IMD,
+    TableData 254 = IMD,
+    TableData 271 = IMD,   // Bank Account Ledger Entry
+    TableData 339 = IMD,
+    TableData 376 = IMD,
+    TableData 379 = IMD,
+    TableData 380 = IMD,
+    TableData 405 = IMD,
+    TableData 480 = IMD,
+    TableData 481 = IMD,
+    TableData 701 = IMD,   // Error Message Register        // Added
+    TableData 1105 = IMD,  // Cost Register                 // Added
+    TableData 1111 = IMD,  // Cost Budget Register          // Added
+    TableData 1205 = IMD,  // Credit Transfer Register      // Added
+    TableData 5617 = IMD,  // FA Register                   // Added
+    TableData 5636 = IMD,  // Insurance Register           // Added
+    TableData 5802 = IMD,
+    TableData 5832 = IMD,
+    TableData 5896 = IMD,  // Inventory Adjmt. Entry       // Added
+    TableData 5934 = IMD,  // Service Register             // Added
+    TableData 5936 = IMD,  // Service Document Register    // Added
+    TableData 6650 = IMD,
+    TableData 7312 = IMD,
+    TableData 7313 = IMD,  // Warehouse Register           // Added
+    TableData 10551 = IMD, // BACS Register                // Added
+    Tabledata 2610 = IMD, // Feature Data Update Status
+    TableData 5811 = IMD, // 
+    TableData 6651 = IMD, //Return Shipment Line 
+    TableData 8401 = IMD, //Record Set Tree
+    // Core Transaction Tables
+    TableData 21 = IMD,    // Cust. Ledger Entry
+    TableData 25 = IMD,    // Vendor Ledger Entry
+    TableData 37 = IMD,    // Sales Line
+    TableData 38 = IMD,    // Purchase Line
+    TableData 39 = IMD,    // Purch. Comment Line
+    TableData 81 = IMD,    // Gen. Journal Line
+    TableData 110 = IMD,   // Sales Shipment Header
+    TableData 111 = IMD,   // Sales Shipment Line
+    TableData 112 = IMD,   // Sales Invoice Header
+    TableData 113 = IMD,   // Sales Invoice Line
+    TableData 114 = IMD,   // Sales Cr.Memo Header
+    TableData 115 = IMD,   // Sales Cr.Memo Line
+    TableData 120 = IMD,   // Purch. Rcpt. Header
+    TableData 121 = IMD,   // Purch. Rcpt. Line
+    TableData 122 = IMD,   // Purch. Inv. Header
+    TableData 123 = IMD,   // Purch. Inv. Line
+    TableData 124 = IMD,   // Purch. Cr. Memo Hdr.
+    TableData 125 = IMD,   // Purch. Cr. Memo Line
+    TableData 169 = IMD;   // Job Ledger Entry
+
     #endregion
 
     #region Variables
@@ -116,6 +154,11 @@ codeunit 50500 "Record Deletion Mgt."
                 UpdateDialog.Update(1, Format(RecordDeletion."Table ID"));
                 RecordRef.Open(RecordDeletion."Table ID");
                 RecordRef.DeleteAll(RunTrigger);
+
+                // Update record count immediately after deletion
+                RecordDeletion."No. of Records" := RecordRef.Count;
+                RecordDeletion.Modify();
+
                 RecordRef.Close();
 
                 RecordDeletionRelError.SetRange("Table ID", RecordDeletion."Table ID");

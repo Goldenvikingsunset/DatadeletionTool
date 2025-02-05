@@ -61,6 +61,13 @@ codeunit 50505 "System Classification Mgt."
         ClassifyUserProfileTables(RecordDeletion);
         ClassifyUtilityTables(RecordDeletion);
         ClassifyWordTemplateTables(RecordDeletion);
+
+        // New Classifications
+        ClassifyApprovalTables(RecordDeletion);
+        ClassifyWorkflowTables(RecordDeletion);
+        ClassifyPaymentTables(RecordDeletion);
+        ClassifyWarehouseTables(RecordDeletion);
+        ClassifyCueTables(RecordDeletion);
     end;
     #endregion
 
@@ -101,6 +108,11 @@ codeunit 50505 "System Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Error Buffer", 'System', 'Buffer', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Recorded Event Buffer", 'System', 'Buffer', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"TempStack", 'System', 'Buffer', 'Document', 300);
+
+        // New Tables
+        ClassifyTable(RecordDeletion, Database::Currency, 'System', 'Core', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Finance Charge Terms", 'System', 'Core', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Responsibility Center", 'System', 'Core', 'Master', 999);
     end;
 
     local procedure ClassifyBufferTables(var RecordDeletion: Record "Record Deletion")
@@ -111,6 +123,10 @@ codeunit 50505 "System Classification Mgt."
         ClassifyTable(RecordDeletion, Database::"Field Buffer", 'System', 'Buffer', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"G/L Acc. Cat. Buffer", 'System', 'Buffer', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Sales Shipment Buffer", 'System', 'Buffer', 'Document', 300);
+
+        // New Tables
+        ClassifyTable(RecordDeletion, Database::"Contact Dupl. Details Buffer", 'System', 'Buffer', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Reservation Entry Buffer", 'System', 'Buffer', 'Document', 300);
     end;
 
     local procedure ClassifySystemBuffers(var RecordDeletion: Record "Record Deletion")
@@ -509,6 +525,15 @@ codeunit 50505 "System Classification Mgt."
         // Setup Status
         ClassifyTable(RecordDeletion, Database::"Assisted Company Setup Status", 'System', 'GuidedExperience', 'Document', 300);
         ClassifyTable(RecordDeletion, Database::"Approval Workflow Wizard", 'System', 'GuidedExperience', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Approval Entry", 'System', 'GuidedExperience', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Approval Comment Line", 'System', 'GuidedExperience', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Posted Approval Entry", 'System', 'GuidedExperience', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Posted Approval Entry", 'System', 'GuidedExperience', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Posted Approval Comment Line", 'System', 'GuidedExperience', 'History', 200);
+        Classifytable(RecordDeletion, Database::"Overdue Approval Entry", 'System', 'GuidedExperience', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Workflow Webhook Entry", 'System', 'GuidedExperience', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Workflow Webhook Notification", 'System', 'GuidedExperience', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Workflow Webhook Subscription", 'System', 'GuidedExperience', 'Document', 300);
     end;
 
     local procedure ClassifyIsolatedStorageTables(var RecordDeletion: Record "Record Deletion")
@@ -572,6 +597,80 @@ codeunit 50505 "System Classification Mgt."
     local procedure ClassifyWordTemplateTables(var RecordDeletion: Record "Record Deletion")
     begin
         ClassifyTable(RecordDeletion, Database::"Word Template", 'System', 'WordTemplate', 'Setup', 999);
+    end;
+    #endregion
+
+    #region New Classifications
+    local procedure ClassifyApprovalTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Approval Entry", 'System', 'Approval', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Approval Comment Line", 'System', 'Approval', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Posted Approval Entry", 'System', 'Approval', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Posted Approval Comment Line", 'System', 'Approval', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Overdue Approval Entry", 'System', 'Approval', 'Document', 300);
+    end;
+
+    local procedure ClassifyWorkflowTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Workflow Buffer", 'System', 'Workflow', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::Workflow, 'System', 'Workflow', 'Master', 999);
+        ClassifyTable(RecordDeletion, Database::"Workflow Step", 'System', 'Workflow', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Workflow Step Instance", 'System', 'Workflow', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Workflow - Table Relation", 'System', 'Workflow', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Workflow Table Relation Value", 'System', 'Workflow', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Workflow Step Buffer", 'System', 'Workflow', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Workflow Category", 'System', 'Workflow', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"WF Event/Response Combination", 'System', 'Workflow', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Workflow Event", 'System', 'Workflow', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Workflow Response", 'System', 'Workflow', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Workflow Event Queue", 'System', 'Workflow', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Workflow Step Argument", 'System', 'Workflow', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Workflow Rule", 'System', 'Workflow', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Workflow - Record Change", 'System', 'Workflow', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Workflow Record Change Archive", 'System', 'Workflow', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Workflow Step Instance Archive", 'System', 'Workflow', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Workflow Step Argument Archive", 'System', 'Workflow', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Workflow User Group", 'System', 'Workflow', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Workflow User Group Member", 'System', 'Workflow', 'Setup', 999);
+    end;
+
+    local procedure ClassifyPaymentTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Payment Application Proposal", 'System', 'Payment', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Applied Payment Entry", 'System', 'Payment', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Posted Payment Recon. Hdr", 'System', 'Payment', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Posted Payment Recon. Line", 'System', 'Payment', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Payment Matching Details", 'System', 'Payment', 'Document', 300);
+    end;
+
+
+    local procedure ClassifyWarehouseTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Put-away Template Header", 'Warehouse', 'PutAway', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Put-away Template Line", 'Warehouse', 'PutAway', 'Setup', 999);
+        ClassifyTable(RecordDeletion, Database::"Whse. Put-away Request", 'Warehouse', 'PutAway', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Whse. Pick Request", 'Warehouse', 'Pick', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Posted Invt. Put-away Header", 'Warehouse', 'PutAway', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Posted Invt. Put-away Line", 'Warehouse', 'PutAway', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Posted Invt. Pick Header", 'Warehouse', 'Pick', 'History', 200);
+        ClassifyTable(RecordDeletion, Database::"Posted Invt. Pick Line", 'Warehouse', 'Pick', 'History', 200);
+    end;
+
+    local procedure ClassifyCueTables(var RecordDeletion: Record "Record Deletion")
+    begin
+        ClassifyTable(RecordDeletion, Database::"Team Member Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Warehouse Basic Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Warehouse WMS Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Service Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Sales Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Finance Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Manufacturing Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Job Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Warehouse Worker WMS Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Administration Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"RapidStart Services Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Relationship Mgmt. Cue", 'System', 'Cues', 'Document', 300);
+        ClassifyTable(RecordDeletion, Database::"Accounting Services Cue", 'System', 'Cues', 'Document', 300);
     end;
     #endregion
 
